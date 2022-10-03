@@ -172,12 +172,12 @@ Location:
     maslib_catalog_number:
       Data Type: String
       Description: "Master Station Library Catalog Number"
-    ashrae_climate_zone:
-      Data Type: "<ASHRAEClimateZone>"
-      Description: "ASHRAE Climate Zone"
-      Notes: "Reference 169-2021"
-    other_climate_zone:
-      Data Type: "<ASHRAEClimateZone>"
+    # ashrae_climate_zone:
+    #   Data Type: "<ASHRAEClimateZone>"
+    #   Description: "ASHRAE Climate Zone"
+    #   Notes: "Reference 169-2021"
+    # other_climate_zone:
+    #   Data Type: "<ASHRAEClimateZone>"
 
 DataSet:
   Object Type: Data Group
@@ -603,38 +603,49 @@ TimeSeries:
   Data Elements:
     display_name:
       Data Type: String
+      Description: ""
       Required: true
     units:
       Data Type: String
+      Description: ""
       Required: true
     value_type:
       Data Type: <TimeSeriesType>
+      Description: ""
       Required: true
     value_time_intervals:
       Data Type: ID
+      Description: ""
       Constraints: ":TimeInterval:"
       Required: true
     values:
       Data Type: "[Numeric][1..]"
+      Description: ""
       Required: true
     source_time_intervals:
       Data Type: ID
+      Description: ""
       Constraints: ":TimeInterval:"
       Required: false
     source:
       Data Type: "[<DataSourceType>][1..]"
+      Description: ""
       Required: false
     uncertainty_time_intervals:
       Data Type: ID
+      Description: ""
       Constraints: ":TimeInterval:"
       Required: false
     uncertainty:
       Data Type: "[Numeric][1..]"
+      Description: ""
       Required: false
     notes_time_intervals:
       Data Type: ID
+      Description: ""
       Constraints: ":TimeInterval:"
       Required: false
     notes:
       Data Type: "[String][1..]"
+      Description: ""
       Required: false
