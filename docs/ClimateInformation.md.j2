@@ -1,0 +1,46 @@
+# Climate Data Model Specification
+
+## Scope
+
+This document defines the capabilities or functionalities of a data model to exchange climate data for use in performance simulation
+for building design, analysis, and operation. It makes recommendations towards, and provides examples of, vocabulary, naming
+conventions, unit system, and data relationships. The data model described in this document is applicable irrespective of the source
+of data for which it is used: measured or observed, modeled or simulated, including reanalysis and projected.
+The term “data model” as used here encompasses the climate data model for building performance simulation and design. This is a
+special case of the general data model for building data exchange published in the **BSR/ASHRAE Standard 205P-Full Public
+Review #3**.
+The scope of this consensus document does not cover post-processing and generation methods, quality control methods for the
+data, changes to existing file formats.
+
+### Applicability
+
+This data model is defined to accommodate data for building performance modeling, design and operation of buildings, and
+calculations for compliance with building codes or beyond-code certifications.
+Building performance simulation could include the modeling of energy, daylight and lighting, water, thermal properties, airflow,
+thermal and visual comfort, urban-scale effects, air quality parameters, and computational fluid dynamics. Calculations for
+compliance and certification could include climate risk assessment, resilience studies, and building certification schemes.
+
+### Exclusions
+
+This data model does not cover soil conditions, data for structural calculations, ground water data and underground water resources,
+geothermal. These could be included as 'custom fields' initially by individual data vendors and users with the possibility to be
+included as 'standard' fields in future versions of the data model(s).
+
+## Data Model
+
+{{ add_data_model('IBPSA-BDE-Climate', base_level=3) }}
+
+## Verification Rules
+
+TimeSeries within a DataSet shall all have TimeIntervals with the same starting and ending timestamps.
+
+## Publishing Rules
+
+This data model does not consider the quality of the source data. That is, whether the data included in a given dataset are “correct”
+or “true” for a given location and time. It merely defines the structures for exchanging data and the judgment about the quality or
+appropriateness of data is left to the data publishers and users. Data providers using this model are encouraged to provide sources
+where possible.
+
+## Application Rules
+
+None.
