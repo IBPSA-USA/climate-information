@@ -179,6 +179,25 @@ Location:
     # other_climate_zone:
     #   Data Type: "<ASHRAEClimateZone>"
 
+DataSet:
+  Object Type: Data Group
+  Data Elements:
+    climate_data_type:
+      Data Type: <ClimateDataType>
+      Description: Type of climate data
+      Required: True
+    time_intervals:
+      Data Type: "[{TimeIntervals}]"
+      Description: Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups
+      Required: True
+    time_series:
+      Data Type: "{ClimateTimeSeries}"
+      Description: Data group containing named TimeSeries data elements
+      Required: True
+    notes:
+      Data Type: String
+      Description: Supplementary information about this dataset
+
 TimeIntervals:
   Object Type: "Data Group"
   Data Elements:
@@ -210,25 +229,6 @@ TimeIntervals:
     notes:
       Description: Notes about each time interval
       Data Type: "[String][1..]"
-
-DataSet:
-  Object Type: Data Group
-  Data Elements:
-    climate_data_type:
-      Data Type: <ClimateDataType>
-      Description: Type of climate data
-      Required: True
-    time_intervals:
-      Data Type: "[{TimeIntervals}]"
-      Description: Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups
-      Required: True
-    time_series:
-      Data Type: "{ClimateTimeSeries}"
-      Description: Data group containing named TimeSeries data elements
-      Required: True
-    notes:
-      Data Type: String
-      Description: Supplementary information about this dataset
 
 ClimateTimeSeries:
   Object Type: Data Group
@@ -646,7 +646,7 @@ TimeSeries:
       Description: ""
       Required: true
     value_time_intervals:
-      Data Type: ID
+      Data Type: Reference
       Description: ""
       Constraints: ":TimeInterval:"
       Required: true
@@ -655,7 +655,7 @@ TimeSeries:
       Description: ""
       Required: true
     source_time_intervals:
-      Data Type: ID
+      Data Type: Reference
       Description: ""
       Constraints: ":TimeInterval:"
       Required: false
@@ -664,7 +664,7 @@ TimeSeries:
       Description: ""
       Required: false
     uncertainty_time_intervals:
-      Data Type: ID
+      Data Type: Reference
       Description: ""
       Constraints: ":TimeInterval:"
       Required: false
@@ -673,7 +673,7 @@ TimeSeries:
       Description: ""
       Required: false
     notes_time_intervals:
-      Data Type: ID
+      Data Type: Reference
       Description: ""
       Constraints: ":TimeInterval:"
       Required: false
