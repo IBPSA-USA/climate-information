@@ -1,0 +1,1084 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Climate Information Data Model – Specifications</title><link>https://IBPSA-USA.github.io/climate-information/specifications/</link><description>Recent content in Specifications on Climate Information Data Model</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://IBPSA-USA.github.io/climate-information/specifications/index.xml" rel="self" type="application/rss+xml"/><item><title>Specifications: ClimateInformation</title><link>https://IBPSA-USA.github.io/climate-information/specifications/climateinformation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://IBPSA-USA.github.io/climate-information/specifications/climateinformation/</guid><description>
+&lt;h1 id="climate-data-model-specification">Climate Data Model Specification&lt;/h1>
+&lt;h2 id="scope">Scope&lt;/h2>
+&lt;p>This document defines the capabilities or functionalities of a data model to exchange climate data for use in performance simulation for building design, analysis, and operation. It makes recommendations towards, and provides examples of, vocabulary, naming conventions, unit system, and data relationships. The data model described in this document is applicable irrespective of the source of data for which it is used: measured or observed, modeled or simulated, including reanalysis and projected. The term “data model” as used here encompasses the climate data model for building performance simulation and design. This is a special case of the general data model for building data exchange published in the &lt;strong>BSR/ASHRAE Standard 205P-Full Public Review #3&lt;/strong>. The scope of this consensus document does not cover post-processing and generation methods, quality control methods for the data, changes to existing file formats.&lt;/p>
+&lt;h3 id="applicability">Applicability&lt;/h3>
+&lt;p>This data model is defined to accommodate data for building performance modeling, design and operation of buildings, and calculations for compliance with building codes or beyond-code certifications. Building performance simulation could include the modeling of energy, daylight and lighting, water, thermal properties, airflow, thermal and visual comfort, urban-scale effects, air quality parameters, and computational fluid dynamics. Calculations for compliance and certification could include climate risk assessment, resilience studies, and building certification schemes.&lt;/p>
+&lt;h3 id="exclusions">Exclusions&lt;/h3>
+&lt;p>This data model does not cover soil conditions, data for structural calculations, ground water data and underground water resources, geothermal. These could be included as ‘custom fields’ initially by individual data vendors and users with the possibility to be included as ‘standard’ fields in future versions of the data model(s).&lt;/p>
+&lt;h2 id="data-model">Data Model&lt;/h2>
+&lt;h3 id="enumerations">Enumerations&lt;/h3>
+&lt;h4 id="schematype">SchemaType&lt;/h4>
+&lt;table style="width:75%;">
+&lt;colgroup>
+&lt;col style="width: 33%" />
+&lt;col style="width: 25%" />
+&lt;col style="width: 16%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Enumerator&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>CLIMATE_INFORMATION&lt;/code>&lt;/td>
+&lt;td>Climate information&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="datasourcetype">DataSourceType&lt;/h4>
+&lt;table style="width:75%;">
+&lt;colgroup>
+&lt;col style="width: 33%" />
+&lt;col style="width: 25%" />
+&lt;col style="width: 16%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Enumerator&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>DIRECT_MEASUREMENT&lt;/code>&lt;/td>
+&lt;td>Direct Measurement&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>DERIVED_MEASUREMENT&lt;/code>&lt;/td>
+&lt;td>Derived Measurement&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>MODELED&lt;/code>&lt;/td>
+&lt;td>Modeled&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>INTERPOLATED&lt;/code>&lt;/td>
+&lt;td>Interpolated&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>ASSUMPTION&lt;/code>&lt;/td>
+&lt;td>Assumption&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>UNKNOWN&lt;/code>&lt;/td>
+&lt;td>Unknown&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="timeseriestype">TimeSeriesType&lt;/h4>
+&lt;table style="width:75%;">
+&lt;colgroup>
+&lt;col style="width: 25%" />
+&lt;col style="width: 25%" />
+&lt;col style="width: 25%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Enumerator&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>INSTANTANEOUS&lt;/code>&lt;/td>
+&lt;td>Instantaneous&lt;/td>
+&lt;td>Values reflect the instant of the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>AVERAGE&lt;/code>&lt;/td>
+&lt;td>Average&lt;/td>
+&lt;td>Values reflect the average between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>SUM&lt;/code>&lt;/td>
+&lt;td>Sum&lt;/td>
+&lt;td>Values reflect the integrated sum between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>CUMULATIVE&lt;/code>&lt;/td>
+&lt;td>Cumulative&lt;/td>
+&lt;td>Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="climatedatatype">ClimateDataType&lt;/h4>
+&lt;table style="width:65%;">
+&lt;colgroup>
+&lt;col style="width: 23%" />
+&lt;col style="width: 25%" />
+&lt;col style="width: 16%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Enumerator&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>MEASURED&lt;/code>&lt;/td>
+&lt;td>Measured climate data&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>TYPICAL&lt;/code>&lt;/td>
+&lt;td>Typical climate data composed of either measured or modeled data, or both&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>REANALYSIS&lt;/code>&lt;/td>
+&lt;td>Climate data from atmospheric reanalysis models used to provide weather and climatic data for historical periods worldwide&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>FORECAST&lt;/code>&lt;/td>
+&lt;td>Climate data from numerical weather forecast models used to provide short term forecasts of weather conditions&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>PROJECTED&lt;/code>&lt;/td>
+&lt;td>Projected climate data from a numerical model of the global climate system that provide estimates of future weather data driven by meteorological and human factors&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="data-groups">Data Groups&lt;/h3>
+&lt;h4 id="climateinformation">ClimateInformation&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 13%" />
+&lt;col style="width: 17%" />
+&lt;col style="width: 20%" />
+&lt;col style="width: 11%" />
+&lt;col style="width: 17%" />
+&lt;col style="width: 9%" />
+&lt;col style="width: 11%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>metadata&lt;/code>&lt;/td>
+&lt;td>Metadata&lt;/td>
+&lt;td>&lt;code>{Metadata}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>location&lt;/code>&lt;/td>
+&lt;td>Location data group&lt;/td>
+&lt;td>&lt;code>{Location}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>data_sets&lt;/code>&lt;/td>
+&lt;td>An array of climate data sets for this location&lt;/td>
+&lt;td>&lt;code>[{DataSet}][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="location">Location&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 14%" />
+&lt;col style="width: 8%" />
+&lt;col style="width: 13%" />
+&lt;col style="width: 5%" />
+&lt;col style="width: 8%" />
+&lt;col style="width: 4%" />
+&lt;col style="width: 43%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>name&lt;/code>&lt;/td>
+&lt;td>Descriptive name of the weather station location&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>Suggest including human-readable identifiers of location, e.g., country, state&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>country_code&lt;/code>&lt;/td>
+&lt;td>Country&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[A-Z]{3}&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>ISO Alpha-3 country code&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>subdivision&lt;/code>&lt;/td>
+&lt;td>Administrative subdivision within a country&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>State, province, or other identified region&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>postal_code&lt;/code>&lt;/td>
+&lt;td>Postal code&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>wmo_station_id&lt;/code>&lt;/td>
+&lt;td>World Meteorological Organization Station Number&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[0-9]{6}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>World Meteorological Organization Station Number&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>latitude&lt;/code>&lt;/td>
+&lt;td>Latitude relative to the equator&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>degrees&lt;/td>
+&lt;td>&lt;code>≥-90.0, ≤90.0&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;ul>
+&lt;li>is North, - is South&lt;/li>
+&lt;/ul>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>longitude&lt;/code>&lt;/td>
+&lt;td>Longitude relative to prime meridian&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>degrees&lt;/td>
+&lt;td>&lt;code>≥-180.0, ≤180.0&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;ul>
+&lt;li>is East, - is West&lt;/li>
+&lt;/ul>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>time_zone_offset&lt;/code>&lt;/td>
+&lt;td>Time zone offset relative to UTC&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>h&lt;/td>
+&lt;td>&lt;code>≥-12.0, ≤14.0&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>elevation&lt;/code>&lt;/td>
+&lt;td>Station elevation relative to sea level (bottom of station)&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>m&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>anemometer_height&lt;/code>&lt;/td>
+&lt;td>Height of anemometer above the ground&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>m&lt;/td>
+&lt;td>&lt;code>&amp;gt;0.0&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>Typically 10 m (potentially move to Time Series Source for Wind Speed/Direction)&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>station_height&lt;/code>&lt;/td>
+&lt;td>Height of other meteorological measurements above the ground&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>m&lt;/td>
+&lt;td>&lt;code>&amp;gt;0.0&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>Typically 1.8 m&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>terrain_class&lt;/code>&lt;/td>
+&lt;td>Roughness class of terrain surrounding weather station&lt;/td>
+&lt;td>&lt;code>&amp;lt;TerrainType&amp;gt;&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Needs better definition, esp. enumeration of list.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>wigos_station_id&lt;/code>&lt;/td>
+&lt;td>WIGOS Station Identifier&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>WMO Integrated Global Observing System, &lt;a href="https://oscar.wmo.int/surface/index.html">https://oscar.wmo.int/surface/index.html&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>wban_station_number&lt;/code>&lt;/td>
+&lt;td>Weather Bureau Army Navy Number&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>other_station_identifiers&lt;/code>&lt;/td>
+&lt;td>User-defined Station Identifiers&lt;/td>
+&lt;td>&lt;code>[{StationIdentifiers}]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>List&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>notes&lt;/code>&lt;/td>
+&lt;td>Notes&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>maslib_catalog_number&lt;/code>&lt;/td>
+&lt;td>Master Station Library Catalog Number&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="dataset">DataSet&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 18%" />
+&lt;col style="width: 15%" />
+&lt;col style="width: 20%" />
+&lt;col style="width: 10%" />
+&lt;col style="width: 15%" />
+&lt;col style="width: 8%" />
+&lt;col style="width: 10%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>climate_data_type&lt;/code>&lt;/td>
+&lt;td>Type of climate data&lt;/td>
+&lt;td>&lt;code>&amp;lt;ClimateDataType&amp;gt;&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>time_intervals&lt;/code>&lt;/td>
+&lt;td>Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups&lt;/td>
+&lt;td>&lt;code>[{TimeIntervals}]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>time_series&lt;/code>&lt;/td>
+&lt;td>Data group containing named TimeSeries data elements&lt;/td>
+&lt;td>&lt;code>{ClimateTimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>notes&lt;/code>&lt;/td>
+&lt;td>Supplementary information about this dataset&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="timeintervals">TimeIntervals&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 16%" />
+&lt;col style="width: 14%" />
+&lt;col style="width: 16%" />
+&lt;col style="width: 9%" />
+&lt;col style="width: 14%" />
+&lt;col style="width: 16%" />
+&lt;col style="width: 12%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>id&lt;/code>&lt;/td>
+&lt;td>Reference id&lt;/td>
+&lt;td>&lt;code>ID&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>:TimeInterval:&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>starting_time&lt;/code>&lt;/td>
+&lt;td>Beginning of data&lt;/td>
+&lt;td>&lt;code>Timestamp&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Used to determine the “previous” timestamp for the first value in a time series where the time series is not instantaneous&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>regular_interval&lt;/code>&lt;/td>
+&lt;td>Duration of regular intervals&lt;/td>
+&lt;td>&lt;code>Numeric&lt;/code>&lt;/td>
+&lt;td>s&lt;/td>
+&lt;td>&lt;code>&amp;gt;0&lt;/code>&lt;/td>
+&lt;td>&lt;code>if !timestamps&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>timestamps&lt;/code>&lt;/td>
+&lt;td>Array of timestamps&lt;/td>
+&lt;td>&lt;code>[Timestamp][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>if !regular_interval&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>labels&lt;/code>&lt;/td>
+&lt;td>Informal labels describing each time interval&lt;/td>
+&lt;td>&lt;code>[String][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>e.g., Month names for monthly intervals&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>notes&lt;/code>&lt;/td>
+&lt;td>Notes about each time interval&lt;/td>
+&lt;td>&lt;code>[String][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="climatetimeseries">ClimateTimeSeries&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 26%" />
+&lt;col style="width: 12%" />
+&lt;col style="width: 11%" />
+&lt;col style="width: 8%" />
+&lt;col style="width: 22%" />
+&lt;col style="width: 6%" />
+&lt;col style="width: 11%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>dry_bulb_temperature&lt;/code>&lt;/td>
+&lt;td>Dry-bulb temperature&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Dry-bulb temperature", units="K", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>dew_point_temperature&lt;/code>&lt;/td>
+&lt;td>Dew-point temperature&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Dew-point temperature", units="K", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>relative_humidity&lt;/code>&lt;/td>
+&lt;td>Relative humidity&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Relative humidity", units="-", value_type=INSTANTANEOUS, values.Constraints="≥0, ≤1"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>wet_bulb_temperature&lt;/code>&lt;/td>
+&lt;td>Wet-bulb temperature&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Wet-bulb temperature", units="K", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>humidity_ratio&lt;/code>&lt;/td>
+&lt;td>Humidity Ratio&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Humidity Ratio", units="-", value_type=INSTANTANEOUS, values.Constraints="≥0, ≤1"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>atmospheric_pressure&lt;/code>&lt;/td>
+&lt;td>Atmospheric pressure&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Atmospheric pressure", units="Pa", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>global_horizontal_irradiance&lt;/code>&lt;/td>
+&lt;td>Global solar horizontal irradiance (Instantaneous, Power)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Global solar horizontal irradiance (Instantaneous, Power)", units="W/m2", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Instantaneous irradiation received on a horizontal detector.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>direct_normal_irradiance&lt;/code>&lt;/td>
+&lt;td>Direct normal solar irradiance (Instantaneous, Power)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Direct normal solar irradiance (Instantaneous, Power)", units="W/m2", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>diffuse_horizontal_irradiance&lt;/code>&lt;/td>
+&lt;td>Diffuse horizontal irradiance (Instantaneous, Power)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Diffuse horizontal irradiance (Instantaneous, Power)", units="W/m2", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>global_horizontal_irradiation&lt;/code>&lt;/td>
+&lt;td>Global solar horizontal irradiation (Sum, Energy)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Global solar horizontal irradiation (Sum, Energy)", units="J/m2", value_type=SUM, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>This quantity is technically insolation, i.e., irradiance from the sun on a horizontal detector integrated over time.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>direct_normal_irradiation&lt;/code>&lt;/td>
+&lt;td>Direct normal solar irradiation (Sum, Energy)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Direct normal solar irradiation (Sum, Energy)", units="J/m2", value_type=SUM, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>diffuse_horizontal_irradiation&lt;/code>&lt;/td>
+&lt;td>Diffuse horizontal irradiation (Sum, Energy)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Diffuse horizontal irradiation (Sum, Energy)", units="J/m2", value_type=SUM, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>horizontal_infrared_sky_irradiance&lt;/code>&lt;/td>
+&lt;td>Horizontal infrared sky irradiance (Instantaneous, Power)&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Horizontal infrared sky irradiance (Instantaneous, Power)", units="W/m2", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Integrated power at each wavelength between 3 um and 100 um at an instant in time, received on a horizontal detector. Downward flux only. Metadata for this variable should declare whether this quantity is modelled, including which model was used, or whether it is measured. If it is measured, the detector"s range should be declared if different from nominal as defined for this variable.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>total_sky_cover&lt;/code>&lt;/td>
+&lt;td>Total sky cover&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Total sky cover", units="-", value_type=INSTANTANEOUS, values.Constraints="≥ 0, ≤1"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Fraction of sky dome covered by clouds or obscuring phenomena. Usually measured in eights or tenths.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>opaque_sky_cover&lt;/code>&lt;/td>
+&lt;td>Opaque sky cover&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Opaque sky cover", units="-", value_type=INSTANTANEOUS, values.Constraints="≥ 0, ≤1"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Fraction of sky dome covered by opaque clouds or obscuring phenomena. Usually measured in eights or tenths.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>precipitable_water&lt;/code>&lt;/td>
+&lt;td>Precipitable water&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Precipitable water", units="m", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Total amount of water in a column of unit area from the elevation of the station to the upper troposphere. Includes clouds.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>aerosol_optical_depth&lt;/code>&lt;/td>
+&lt;td>Aerosol optical depth&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Aerosol optical depth", units="-", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Extinction coefficient for a collimated beam traveling through the atmosphere, denoting the extinction of a beam as it traverses the atmosphere. The natural log of the ratio of incident to transmitted radiant power. Described using Beer"s law (transmission, scattering, and absorption).&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>global_horizontal_illuminance&lt;/code>&lt;/td>
+&lt;td>Global horizontal illuminance&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Global horizontal illuminance", units="lx", value_type=AVERAGE, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>direct_normal_illuminance&lt;/code>&lt;/td>
+&lt;td>Direct normal illuminance&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Direct normal illuminance", units="lx", value_type=AVERAGE, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>diffuse_horizontal_illuminance&lt;/code>&lt;/td>
+&lt;td>Diffuse horizontal illuminance&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Diffuse horizontal illuminance", units="lx", value_type=AVERAGE, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>wind_direction&lt;/code>&lt;/td>
+&lt;td>Wind direction&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Wind direction", units="radians", value_type=INSTANTANEOUS, values.Constraints=""&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Clockwise from north&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>wind_speed&lt;/code>&lt;/td>
+&lt;td>Wind speed&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Wind speed", units="m/s", value_type=INSTANTANEOUS, values.Constraints=""&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Instantaneous wind speed at the time stamp. Wind speed is measured at 10m as standard, anything else must be included in metadata.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>snow_depth&lt;/code>&lt;/td>
+&lt;td>Snow depth&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Snow depth", units="m", value_type=INSTANTANEOUS, values.Constraints=""&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Current observed depth of snow on the ground.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>albedo&lt;/code>&lt;/td>
+&lt;td>Albedo&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Albedo", units="-", value_type=INSTANTANEOUS, values.Constraints="≥ 0, ≤1"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>liquid_precipitation_depth&lt;/code>&lt;/td>
+&lt;td>Liquid precipitation depth&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Liquid precipitation depth", units="m", value_type=SUM, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>The cumulative depth of precipitation in the past time step.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>particulate_matter_01_0&lt;/code>&lt;/td>
+&lt;td>Particulate Matter 1.0&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Particulate Matter 1.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>PM1.0: Mass of particles of size less than or equal to 1 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>particulate_matter_02_5&lt;/code>&lt;/td>
+&lt;td>Particulate Matter 2.5&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Particulate Matter 2.5", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>PM2.5: Mass of particles of size less than or equal to 2.5 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>particulate_matter_04_0&lt;/code>&lt;/td>
+&lt;td>Particulate Matter 4.0&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Particulate Matter 4.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>PM4.0: Mass of particles of size less than or equal to 4.0 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>particulate_matter_05_0&lt;/code>&lt;/td>
+&lt;td>Particulate Matter 5.0&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Particulate Matter 5.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>PM5.0: Mass of particles of size less than or equal to 5.0 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>particulate_matter_10_0&lt;/code>&lt;/td>
+&lt;td>Particulate Matter 10.0&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Particulate Matter 10.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>PM10: Mass of particles of size less than or equal to 10 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>carbon_dioxide&lt;/code>&lt;/td>
+&lt;td>Carbon Dioxide concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Carbon Dioxide concentration", units="ppm", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>CO2&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>nitrogen_dioxide&lt;/code>&lt;/td>
+&lt;td>Nitrogen Dioxide concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Nitrogen Dioxide concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>NO2&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>nitrogen_oxide&lt;/code>&lt;/td>
+&lt;td>Nitrogen Oxide concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Nitrogen Oxide concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>sulphur_dioxide&lt;/code>&lt;/td>
+&lt;td>Sulphur Dioxide concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Sulphur Dioxide concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>SO2&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>ozone&lt;/code>&lt;/td>
+&lt;td>Ozone concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Ozone concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>O3&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>sky_type&lt;/code>&lt;/td>
+&lt;td>Sky Type&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Sky Type", units="-", value_type=INSTANTANEOUS, values.Constraints="-"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>CIE sky type, enumerated&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>ammonia&lt;/code>&lt;/td>
+&lt;td>Ammonia concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Ammonia concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>NH3&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>carbon_monoxide&lt;/code>&lt;/td>
+&lt;td>Carbon Monoxide concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Carbon Monoxide concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>CO&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>formaldehyde&lt;/code>&lt;/td>
+&lt;td>Formaldehyde&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Formaldehyde", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>HCHO&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>turbidity&lt;/code>&lt;/td>
+&lt;td>Turbidity&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Turbidity", units="", value_type=INSTANTANEOUS, values.Constraints=""&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>lead&lt;/code>&lt;/td>
+&lt;td>Lead concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Lead concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>Pb&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>mercury&lt;/code>&lt;/td>
+&lt;td>Mercury concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Mercury concentration", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>benzene&lt;/code>&lt;/td>
+&lt;td>Benzene&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Benzene", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>C6H6&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>voc&lt;/code>&lt;/td>
+&lt;td>Total volatile organic compound concentration&lt;/td>
+&lt;td>&lt;code>{TimeSeries}&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>display_name="Total volatile organic compound concentration", units="ppb", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4 id="timeseries">TimeSeries&lt;/h4>
+&lt;table>
+&lt;colgroup>
+&lt;col style="width: 23%" />
+&lt;col style="width: 13%" />
+&lt;col style="width: 21%" />
+&lt;col style="width: 9%" />
+&lt;col style="width: 14%" />
+&lt;col style="width: 7%" />
+&lt;col style="width: 9%" />
+&lt;/colgroup>
+&lt;thead>
+&lt;tr class="header">
+&lt;th>&lt;strong>Name&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Description&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Data Type&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Units&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Constraints&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Req&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Notes&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr class="odd">
+&lt;td>&lt;code>display_name&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>units&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>String&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>value_type&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>&amp;lt;TimeSeriesType&amp;gt;&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>value_time_intervals&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>Reference&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>:TimeInterval:&lt;/code>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>values&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[Numeric][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>source_time_intervals&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>Reference&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>:TimeInterval:&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>source&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[&amp;lt;DataSourceType&amp;gt;][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>uncertainty_time_intervals&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>Reference&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>:TimeInterval:&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>uncertainty&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[Numeric][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="even">
+&lt;td>&lt;code>notes_time_intervals&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>Reference&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>:TimeInterval:&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr class="odd">
+&lt;td>&lt;code>notes&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;code>[String][1..]&lt;/code>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="verification-rules">Verification Rules&lt;/h2>
+&lt;p>TimeSeries within a DataSet shall all have TimeIntervals with the same starting and ending timestamps.&lt;/p>
+&lt;h2 id="publishing-rules">Publishing Rules&lt;/h2>
+&lt;p>This data model does not consider the quality of the source data. That is, whether the data included in a given dataset are “correct” or “true” for a given location and time. It merely defines the structures for exchanging data and the judgment about the quality or appropriateness of data is left to the data publishers and users. Data providers using this model are encouraged to provide sources where possible.&lt;/p>
+&lt;h2 id="application-rules">Application Rules&lt;/h2>
+&lt;p>None.&lt;/p></description></item></channel></rss>
