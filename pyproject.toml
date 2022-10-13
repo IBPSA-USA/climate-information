@@ -5,7 +5,7 @@ description = "Climate Information Data Model"
 authors = ["IBPSA-USA"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 lattice = {git = "https://github.com/bigladder/lattice.git", branch="generate-markdown"}
 
 [tool.poetry.dev-dependencies]
