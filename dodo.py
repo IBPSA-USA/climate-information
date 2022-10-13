@@ -9,6 +9,9 @@ from lattice import Lattice
 
 climate_data_model = Lattice()
 
+DOIT_CONFIG = {"default_tasks": ["validate_example_files"]}
+
+
 def task_validate_example_files():
   '''Validates the example files against the JSON schema (and other validation steps)'''
   return {
