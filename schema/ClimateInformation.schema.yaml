@@ -75,7 +75,7 @@ ClimateInformation:
       Data Type: "{Metadata}"
       Required: True
     location:
-      Description: "Location data gorup"
+      Description: "Location data group"
       Data Type: "{Location}"
       Required: True
     data_sets:
@@ -158,7 +158,7 @@ Location:
     wigos_station_id:
       Data Type: String
       Description: "WIGOS Station Identifier"
-      Notes: "WMO Integrated Global Observing System, https://oscar.wmo.int/surface/index.html#/"
+      Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
     wban_station_number:
       Data Type: String
       Description: "Weather Bureau Army Navy Number"
@@ -210,7 +210,7 @@ TimeIntervals:
       Description: Beginning of data
       Data Type: Timestamp
       Required: False
-      Notes: Used to determine the “previous” timestamp for the first value in a time
+      Notes: Used to determine the "previous" timestamp for the first value in a time
         series where the time series is not instantaneous
     regular_interval:
       Description: Duration of regular intervals
@@ -383,7 +383,7 @@ ClimateTimeSeries:
       - values.Constraints=">=0"
       Data Type: "{TimeSeries}"
       Description: Aerosol optical depth
-      Notes: Extinction coefficient for a collimated beam travelling through the atmosphere,
+      Notes: Extinction coefficient for a collimated beam traveling through the atmosphere,
         denoting the extinction of a beam as it traverses the atmosphere. The natural
         log of the ratio of incident to transmitted radiant power. Described using Beer"s
         law (transmission, scattering, and absorption).
