@@ -9,10 +9,10 @@
 &lt;h2 id="data-model">Data Model&lt;/h2>
 &lt;h3 id="enumerations">Enumerations&lt;/h3>
 &lt;h4 id="schematype">SchemaType&lt;/h4>
-&lt;table style="width:75%;">
+&lt;table style="width:81%;">
 &lt;colgroup>
 &lt;col style="width: 33%" />
-&lt;col style="width: 25%" />
+&lt;col style="width: 30%" />
 &lt;col style="width: 16%" />
 &lt;/colgroup>
 &lt;thead>
@@ -31,10 +31,10 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="datasourcetype">DataSourceType&lt;/h4>
-&lt;table style="width:75%;">
+&lt;table style="width:81%;">
 &lt;colgroup>
 &lt;col style="width: 33%" />
-&lt;col style="width: 25%" />
+&lt;col style="width: 30%" />
 &lt;col style="width: 16%" />
 &lt;/colgroup>
 &lt;thead>
@@ -78,11 +78,11 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="timeseriestype">TimeSeriesType&lt;/h4>
-&lt;table style="width:75%;">
+&lt;table>
 &lt;colgroup>
-&lt;col style="width: 25%" />
-&lt;col style="width: 25%" />
-&lt;col style="width: 25%" />
+&lt;col style="width: 17%" />
+&lt;col style="width: 17%" />
+&lt;col style="width: 65%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -115,11 +115,11 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="climatedatatype">ClimateDataType&lt;/h4>
-&lt;table style="width:65%;">
+&lt;table>
 &lt;colgroup>
-&lt;col style="width: 23%" />
-&lt;col style="width: 25%" />
 &lt;col style="width: 16%" />
+&lt;col style="width: 71%" />
+&lt;col style="width: 11%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -160,11 +160,11 @@
 &lt;h4 id="climateinformation">ClimateInformation&lt;/h4>
 &lt;table>
 &lt;colgroup>
-&lt;col style="width: 13%" />
-&lt;col style="width: 17%" />
+&lt;col style="width: 12%" />
 &lt;col style="width: 20%" />
+&lt;col style="width: 19%" />
 &lt;col style="width: 11%" />
-&lt;col style="width: 17%" />
+&lt;col style="width: 16%" />
 &lt;col style="width: 9%" />
 &lt;col style="width: 11%" />
 &lt;/colgroup>
@@ -213,12 +213,12 @@
 &lt;table>
 &lt;colgroup>
 &lt;col style="width: 14%" />
-&lt;col style="width: 8%" />
+&lt;col style="width: 9%" />
 &lt;col style="width: 13%" />
 &lt;col style="width: 5%" />
 &lt;col style="width: 8%" />
 &lt;col style="width: 4%" />
-&lt;col style="width: 43%" />
+&lt;col style="width: 42%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
