@@ -1,6 +1,6 @@
 Schema:
   Object Type: "Meta"
-  Title: "IBPSA-BDE"
+  Title: "Climate Information"
   Description: "Schema for describing climate information"
   Version: "0.1.0"
   Root Data Group: "ClimateInformation"
@@ -73,6 +73,7 @@ ClimateInformation:
     metadata:
       Description: "Metadata"
       Data Type: "{Metadata}"
+      Constraints: "schema=CLIMATE_INFORMATION"
       Required: True
     location:
       Description: "Location data group"

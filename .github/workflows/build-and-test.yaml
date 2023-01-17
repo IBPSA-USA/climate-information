@@ -8,32 +8,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.8", "3.9"]
+        os: [ubuntu-latest]
+        python-version: ["3.10"]
     defaults:
       run:
         shell: bash
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v3
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: bigladder/github-actions/setup-python-poetry@main
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        uses: snok/install-poetry@v1.3.1
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - name: Install dependencies
-        run: poetry install
+      - name: Setup Hugo
+        uses: bigladder/lattice/.github/actions/setup-hugo@main
       - name: Build and test
         run: |
           source $VENV
           poetry run doit
-      - name: Upload Build Content
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-content-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: .lattice
