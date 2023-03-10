@@ -1,11 +1,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Climate Information Data Model – Specifications</title><link>https://IBPSA-USA.github.io/climate-information/specifications/</link><description>Recent content in Specifications on Climate Information Data Model</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://IBPSA-USA.github.io/climate-information/specifications/index.xml" rel="self" type="application/rss+xml"/><item><title>Specifications: ClimateInformation</title><link>https://IBPSA-USA.github.io/climate-information/specifications/climateinformation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://IBPSA-USA.github.io/climate-information/specifications/climateinformation/</guid><description>
-&lt;h1 id="climate-data-model-specification">Climate Data Model Specification&lt;/h1>
+&lt;h1 id="climate-data-model-specification">Climate Data Model
+Specification&lt;/h1>
 &lt;h2 id="scope">Scope&lt;/h2>
-&lt;p>This document defines the capabilities or functionalities of a data model to exchange climate data for use in performance simulation for building design, analysis, and operation. It makes recommendations towards, and provides examples of, vocabulary, naming conventions, unit system, and data relationships. The data model described in this document is applicable irrespective of the source of data for which it is used: measured or observed, modeled or simulated, including reanalysis and projected. The term “data model” as used here encompasses the climate data model for building performance simulation and design. This is a special case of the general data model for building data exchange published in the &lt;strong>BSR/ASHRAE Standard 205P-Full Public Review #3&lt;/strong>. The scope of this consensus document does not cover post-processing and generation methods, quality control methods for the data, changes to existing file formats.&lt;/p>
+&lt;p>This document defines the capabilities or functionalities of a data
+model to exchange climate data for use in performance simulation for
+building design, analysis, and operation. It makes recommendations
+towards, and provides examples of, vocabulary, naming conventions, unit
+system, and data relationships. The data model described in this
+document is applicable irrespective of the source of data for which it
+is used: measured or observed, modeled or simulated, including
+reanalysis and projected. The term “data model” as used here encompasses
+the climate data model for building performance simulation and design.
+This is a special case of the general data model for building data
+exchange published in the &lt;strong>BSR/ASHRAE Standard 205P-Full Public
+Review #3&lt;/strong>. The scope of this consensus document does not cover
+post-processing and generation methods, quality control methods for the
+data, changes to existing file formats.&lt;/p>
 &lt;h3 id="applicability">Applicability&lt;/h3>
-&lt;p>This data model is defined to accommodate data for building performance modeling, design and operation of buildings, and calculations for compliance with building codes or beyond-code certifications. Building performance simulation could include the modeling of energy, daylight and lighting, water, thermal properties, airflow, thermal and visual comfort, urban-scale effects, air quality parameters, and computational fluid dynamics. Calculations for compliance and certification could include climate risk assessment, resilience studies, and building certification schemes.&lt;/p>
+&lt;p>This data model is defined to accommodate data for building
+performance modeling, design and operation of buildings, and
+calculations for compliance with building codes or beyond-code
+certifications. Building performance simulation could include the
+modeling of energy, daylight and lighting, water, thermal properties,
+airflow, thermal and visual comfort, urban-scale effects, air quality
+parameters, and computational fluid dynamics. Calculations for
+compliance and certification could include climate risk assessment,
+resilience studies, and building certification schemes.&lt;/p>
 &lt;h3 id="exclusions">Exclusions&lt;/h3>
-&lt;p>This data model does not cover soil conditions, data for structural calculations, ground water data and underground water resources, geothermal. These could be included as ‘custom fields’ initially by individual data vendors and users with the possibility to be included as ‘standard’ fields in future versions of the data model(s).&lt;/p>
+&lt;p>This data model does not cover soil conditions, data for structural
+calculations, ground water data and underground water resources,
+geothermal. These could be included as ‘custom fields’ initially by
+individual data vendors and users with the possibility to be included as
+‘standard’ fields in future versions of the data model(s).&lt;/p>
 &lt;h2 id="data-model">Data Model&lt;/h2>
 &lt;h3 id="enumerations">Enumerations&lt;/h3>
 &lt;h4 id="schematype">SchemaType&lt;/h4>
@@ -78,11 +104,11 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="timeseriestype">TimeSeriesType&lt;/h4>
-&lt;table>
+&lt;table style="width:99%;">
 &lt;colgroup>
 &lt;col style="width: 17%" />
 &lt;col style="width: 17%" />
-&lt;col style="width: 65%" />
+&lt;col style="width: 64%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -95,27 +121,31 @@
 &lt;tr class="odd">
 &lt;td>&lt;code>INSTANTANEOUS&lt;/code>&lt;/td>
 &lt;td>Instantaneous&lt;/td>
-&lt;td>Values reflect the instant of the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;td>Values reflect the instant of the current timestamp in the
+corresponding TimeIntervals data group&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>AVERAGE&lt;/code>&lt;/td>
 &lt;td>Average&lt;/td>
-&lt;td>Values reflect the average between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;td>Values reflect the average between the previous timestamp and the
+current timestamp in the corresponding TimeIntervals data group&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>SUM&lt;/code>&lt;/td>
 &lt;td>Sum&lt;/td>
-&lt;td>Values reflect the integrated sum between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;td>Values reflect the integrated sum between the previous timestamp and
+the current timestamp in the corresponding TimeIntervals data group&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>CUMULATIVE&lt;/code>&lt;/td>
 &lt;td>Cumulative&lt;/td>
-&lt;td>Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeIntervals data group&lt;/td>
+&lt;td>Values reflect the cumulative sum between the starting timestamp and
+the current timestamp in the corresponding TimeIntervals data group&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="climatedatatype">ClimateDataType&lt;/h4>
-&lt;table>
+&lt;table style="width:99%;">
 &lt;colgroup>
 &lt;col style="width: 16%" />
 &lt;col style="width: 71%" />
@@ -136,37 +166,42 @@
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>TYPICAL&lt;/code>&lt;/td>
-&lt;td>Typical climate data composed of either measured or modeled data, or both&lt;/td>
+&lt;td>Typical climate data composed of either measured or modeled data, or
+both&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>REANALYSIS&lt;/code>&lt;/td>
-&lt;td>Climate data from atmospheric reanalysis models used to provide weather and climatic data for historical periods worldwide&lt;/td>
+&lt;td>Climate data from atmospheric reanalysis models used to provide
+weather and climatic data for historical periods worldwide&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>FORECAST&lt;/code>&lt;/td>
-&lt;td>Climate data from numerical weather forecast models used to provide short term forecasts of weather conditions&lt;/td>
+&lt;td>Climate data from numerical weather forecast models used to provide
+short term forecasts of weather conditions&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>PROJECTED&lt;/code>&lt;/td>
-&lt;td>Projected climate data from a numerical model of the global climate system that provide estimates of future weather data driven by meteorological and human factors&lt;/td>
+&lt;td>Projected climate data from a numerical model of the global climate
+system that provide estimates of future weather data driven by
+meteorological and human factors&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;h3 id="data-groups">Data Groups&lt;/h3>
 &lt;h4 id="climateinformation">ClimateInformation&lt;/h4>
-&lt;table>
+&lt;table style="width:96%;">
 &lt;colgroup>
-&lt;col style="width: 12%" />
-&lt;col style="width: 20%" />
-&lt;col style="width: 19%" />
 &lt;col style="width: 11%" />
-&lt;col style="width: 16%" />
+&lt;col style="width: 14%" />
+&lt;col style="width: 17%" />
 &lt;col style="width: 9%" />
-&lt;col style="width: 11%" />
+&lt;col style="width: 25%" />
+&lt;col style="width: 8%" />
+&lt;col style="width: 9%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -185,7 +220,7 @@
 &lt;td>Metadata&lt;/td>
 &lt;td>&lt;code>{Metadata}&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>&lt;/td>
+&lt;td>&lt;code>schema=CLIMATE_INFORMATION&lt;/code>&lt;/td>
 &lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
@@ -210,15 +245,15 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="location">Location&lt;/h4>
-&lt;table>
+&lt;table style="width:98%;">
 &lt;colgroup>
 &lt;col style="width: 14%" />
 &lt;col style="width: 9%" />
-&lt;col style="width: 13%" />
+&lt;col style="width: 12%" />
 &lt;col style="width: 5%" />
 &lt;col style="width: 8%" />
 &lt;col style="width: 4%" />
-&lt;col style="width: 42%" />
+&lt;col style="width: 41%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -239,7 +274,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
 &lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
-&lt;td>Suggest including human-readable identifiers of location, e.g., country, state&lt;/td>
+&lt;td>Suggest including human-readable identifiers of location, e.g.,
+country, state&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>country_code&lt;/code>&lt;/td>
@@ -324,7 +360,8 @@
 &lt;td>m&lt;/td>
 &lt;td>&lt;code>&amp;gt;0.0&lt;/code>&lt;/td>
 &lt;td>&lt;span class="math inline">\(✓\)&lt;/span>&lt;/td>
-&lt;td>Typically 10 m (potentially move to Time Series Source for Wind Speed/Direction)&lt;/td>
+&lt;td>Typically 10 m (potentially move to Time Series Source for Wind
+Speed/Direction)&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>station_height&lt;/code>&lt;/td>
@@ -351,7 +388,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>WMO Integrated Global Observing System, &lt;a href="https://oscar.wmo.int/surface/index.html">https://oscar.wmo.int/surface/index.html&lt;/a>&lt;/td>
+&lt;td>WMO Integrated Global Observing System, &lt;a
+href="https://oscar.wmo.int/surface/index.html">https://oscar.wmo.int/surface/index.html&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>wban_station_number&lt;/code>&lt;/td>
@@ -392,15 +430,15 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="dataset">DataSet&lt;/h4>
-&lt;table>
+&lt;table style="width:96%;">
 &lt;colgroup>
 &lt;col style="width: 18%" />
-&lt;col style="width: 15%" />
-&lt;col style="width: 20%" />
-&lt;col style="width: 10%" />
-&lt;col style="width: 15%" />
+&lt;col style="width: 14%" />
+&lt;col style="width: 19%" />
+&lt;col style="width: 9%" />
+&lt;col style="width: 14%" />
 &lt;col style="width: 8%" />
-&lt;col style="width: 10%" />
+&lt;col style="width: 9%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -425,7 +463,8 @@
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>time_intervals&lt;/code>&lt;/td>
-&lt;td>Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups&lt;/td>
+&lt;td>Array of TimeInterval data groups whose ids may be referenced within
+TimeSeries data groups&lt;/td>
 &lt;td>&lt;code>[{TimeIntervals}]&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
@@ -453,14 +492,14 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="timeintervals">TimeIntervals&lt;/h4>
-&lt;table>
+&lt;table style="width:96%;">
 &lt;colgroup>
-&lt;col style="width: 16%" />
-&lt;col style="width: 14%" />
-&lt;col style="width: 16%" />
+&lt;col style="width: 15%" />
+&lt;col style="width: 13%" />
+&lt;col style="width: 15%" />
 &lt;col style="width: 9%" />
 &lt;col style="width: 14%" />
-&lt;col style="width: 16%" />
+&lt;col style="width: 15%" />
 &lt;col style="width: 12%" />
 &lt;/colgroup>
 &lt;thead>
@@ -491,7 +530,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Used to determine the “previous” timestamp for the first value in a time series where the time series is not instantaneous&lt;/td>
+&lt;td>Used to determine the “previous” timestamp for the first value in a
+time series where the time series is not instantaneous&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>regular_interval&lt;/code>&lt;/td>
@@ -532,13 +572,13 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="climatetimeseries">ClimateTimeSeries&lt;/h4>
-&lt;table>
+&lt;table style="width:97%;">
 &lt;colgroup>
 &lt;col style="width: 26%" />
 &lt;col style="width: 12%" />
 &lt;col style="width: 11%" />
 &lt;col style="width: 8%" />
-&lt;col style="width: 22%" />
+&lt;col style="width: 21%" />
 &lt;col style="width: 6%" />
 &lt;col style="width: 11%" />
 &lt;/colgroup>
@@ -642,7 +682,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Global solar horizontal irradiation (Sum, Energy)", units="J/m2", value_type=SUM, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>This quantity is technically insolation, i.e., irradiance from the sun on a horizontal detector integrated over time.&lt;/td>
+&lt;td>This quantity is technically insolation, i.e., irradiance from the
+sun on a horizontal detector integrated over time.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>direct_normal_irradiation&lt;/code>&lt;/td>
@@ -669,7 +710,12 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Horizontal infrared sky irradiance (Instantaneous, Power)", units="W/m2", value_type=INSTANTANEOUS, values.Constraints="&amp;gt;0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Integrated power at each wavelength between 3 um and 100 um at an instant in time, received on a horizontal detector. Downward flux only. Metadata for this variable should declare whether this quantity is modelled, including which model was used, or whether it is measured. If it is measured, the detector"s range should be declared if different from nominal as defined for this variable.&lt;/td>
+&lt;td>Integrated power at each wavelength between 3 um and 100 um at an
+instant in time, received on a horizontal detector. Downward flux only.
+Metadata for this variable should declare whether this quantity is
+modelled, including which model was used, or whether it is measured. If
+it is measured, the detector”s range should be declared if different
+from nominal as defined for this variable.&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>total_sky_cover&lt;/code>&lt;/td>
@@ -678,7 +724,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Total sky cover", units="-", value_type=INSTANTANEOUS, values.Constraints="≥ 0, ≤1"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Fraction of sky dome covered by clouds or obscuring phenomena. Usually measured in eights or tenths.&lt;/td>
+&lt;td>Fraction of sky dome covered by clouds or obscuring phenomena.
+Usually measured in eights or tenths.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>opaque_sky_cover&lt;/code>&lt;/td>
@@ -687,7 +734,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Opaque sky cover", units="-", value_type=INSTANTANEOUS, values.Constraints="≥ 0, ≤1"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Fraction of sky dome covered by opaque clouds or obscuring phenomena. Usually measured in eights or tenths.&lt;/td>
+&lt;td>Fraction of sky dome covered by opaque clouds or obscuring
+phenomena. Usually measured in eights or tenths.&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>precipitable_water&lt;/code>&lt;/td>
@@ -696,7 +744,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Precipitable water", units="m", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Total amount of water in a column of unit area from the elevation of the station to the upper troposphere. Includes clouds.&lt;/td>
+&lt;td>Total amount of water in a column of unit area from the elevation of
+the station to the upper troposphere. Includes clouds.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>aerosol_optical_depth&lt;/code>&lt;/td>
@@ -705,7 +754,11 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Aerosol optical depth", units="-", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Extinction coefficient for a collimated beam traveling through the atmosphere, denoting the extinction of a beam as it traverses the atmosphere. The natural log of the ratio of incident to transmitted radiant power. Described using Beer"s law (transmission, scattering, and absorption).&lt;/td>
+&lt;td>Extinction coefficient for a collimated beam traveling through the
+atmosphere, denoting the extinction of a beam as it traverses the
+atmosphere. The natural log of the ratio of incident to transmitted
+radiant power. Described using Beer”s law (transmission, scattering, and
+absorption).&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>global_horizontal_illuminance&lt;/code>&lt;/td>
@@ -750,7 +803,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Wind speed", units="m/s", value_type=INSTANTANEOUS, values.Constraints=""&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>Instantaneous wind speed at the time stamp. Wind speed is measured at 10m as standard, anything else must be included in metadata.&lt;/td>
+&lt;td>Instantaneous wind speed at the time stamp. Wind speed is measured
+at 10m as standard, anything else must be included in metadata.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>snow_depth&lt;/code>&lt;/td>
@@ -786,7 +840,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Particulate Matter 1.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>PM1.0: Mass of particles of size less than or equal to 1 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;td>PM1.0: Mass of particles of size less than or equal to 1 um
+(micrometer) in one cubic meter of air.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>particulate_matter_02_5&lt;/code>&lt;/td>
@@ -795,7 +850,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Particulate Matter 2.5", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>PM2.5: Mass of particles of size less than or equal to 2.5 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;td>PM2.5: Mass of particles of size less than or equal to 2.5 um
+(micrometer) in one cubic meter of air.&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>particulate_matter_04_0&lt;/code>&lt;/td>
@@ -804,7 +860,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Particulate Matter 4.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>PM4.0: Mass of particles of size less than or equal to 4.0 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;td>PM4.0: Mass of particles of size less than or equal to 4.0 um
+(micrometer) in one cubic meter of air.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>particulate_matter_05_0&lt;/code>&lt;/td>
@@ -813,7 +870,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Particulate Matter 5.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>PM5.0: Mass of particles of size less than or equal to 5.0 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;td>PM5.0: Mass of particles of size less than or equal to 5.0 um
+(micrometer) in one cubic meter of air.&lt;/td>
 &lt;/tr>
 &lt;tr class="even">
 &lt;td>&lt;code>particulate_matter_10_0&lt;/code>&lt;/td>
@@ -822,7 +880,8 @@
 &lt;td>&lt;/td>
 &lt;td>&lt;code>display_name="Particulate Matter 10.0", units="ug/m3", value_type=INSTANTANEOUS, values.Constraints="≥0"&lt;/code>&lt;/td>
 &lt;td>&lt;/td>
-&lt;td>PM10: Mass of particles of size less than or equal to 10 um (micrometer) in one cubic meter of air.&lt;/td>
+&lt;td>PM10: Mass of particles of size less than or equal to 10 um
+(micrometer) in one cubic meter of air.&lt;/td>
 &lt;/tr>
 &lt;tr class="odd">
 &lt;td>&lt;code>carbon_dioxide&lt;/code>&lt;/td>
@@ -953,15 +1012,15 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h4 id="timeseries">TimeSeries&lt;/h4>
-&lt;table>
+&lt;table style="width:96%;">
 &lt;colgroup>
-&lt;col style="width: 23%" />
+&lt;col style="width: 22%" />
 &lt;col style="width: 13%" />
-&lt;col style="width: 21%" />
-&lt;col style="width: 9%" />
+&lt;col style="width: 20%" />
+&lt;col style="width: 8%" />
 &lt;col style="width: 14%" />
 &lt;col style="width: 7%" />
-&lt;col style="width: 9%" />
+&lt;col style="width: 8%" />
 &lt;/colgroup>
 &lt;thead>
 &lt;tr class="header">
@@ -1077,8 +1136,15 @@
 &lt;/tbody>
 &lt;/table>
 &lt;h2 id="verification-rules">Verification Rules&lt;/h2>
-&lt;p>TimeSeries within a DataSet shall all have TimeIntervals with the same starting and ending timestamps.&lt;/p>
+&lt;p>TimeSeries within a DataSet shall all have TimeIntervals with the
+same starting and ending timestamps.&lt;/p>
 &lt;h2 id="publishing-rules">Publishing Rules&lt;/h2>
-&lt;p>This data model does not consider the quality of the source data. That is, whether the data included in a given dataset are “correct” or “true” for a given location and time. It merely defines the structures for exchanging data and the judgment about the quality or appropriateness of data is left to the data publishers and users. Data providers using this model are encouraged to provide sources where possible.&lt;/p>
+&lt;p>This data model does not consider the quality of the source data.
+That is, whether the data included in a given dataset are “correct” or
+“true” for a given location and time. It merely defines the structures
+for exchanging data and the judgment about the quality or
+appropriateness of data is left to the data publishers and users. Data
+providers using this model are encouraged to provide sources where
+possible.&lt;/p>
 &lt;h2 id="application-rules">Application Rules&lt;/h2>
 &lt;p>None.&lt;/p></description></item></channel></rss>
