@@ -152,10 +152,10 @@ Location:
       Notes: "Typically 1.8 m"
       Required: True
       Units: "m"
-    terrain_class:
-      Data Type: "<TerrainType>"
-      Description: "Roughness class of terrain surrounding weather station"
-      Notes: "Needs better definition, esp. enumeration of list."
+    # terrain_class:
+    #   Data Type: "<TerrainType>"
+    #   Description: "Roughness class of terrain surrounding weather station"
+    #   Notes: "Needs better definition, esp. enumeration of list."
     wigos_station_id:
       Data Type: String
       Description: "WIGOS Station Identifier"
@@ -163,10 +163,10 @@ Location:
     wban_station_number:
       Data Type: String
       Description: "Weather Bureau Army Navy Number"
-    other_station_identifiers:
-      Data Type: "[{StationIdentifiers}]"
-      Description: "User-defined Station Identifiers"
-      Notes: "List"
+    # other_station_identifiers:
+    #   Data Type: "[{StationIdentifiers}]"
+    #   Description: "User-defined Station Identifiers"
+    #   Notes: "List"
     notes:
       Data Type: String
       Description: "Notes"
