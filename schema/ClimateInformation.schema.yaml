@@ -440,17 +440,17 @@ ClimateTimeSeries:
       Data Type: "{TimeSeries}"
       Description: Snow depth
       Notes: Current observed depth of snow on the ground.
-    albedo:
+    albedo_ground:
       Constraints:
-      - display_name="Albedo"
+      - display_name="Albedo - Ground"
       - units="-"
       - value_type=INSTANTANEOUS
       - values.Constraints=">= 0, <=1"
       Data Type: "{TimeSeries}"
       Description: Albedo
-    liquid_precipitation_depth:
+    liquid_precipitation:
       Constraints:
-      - display_name="Liquid precipitation depth"
+      - display_name="Liquid precipitation"
       - units="m"
       - value_type=SUM
       - values.Constraints=">=0"
