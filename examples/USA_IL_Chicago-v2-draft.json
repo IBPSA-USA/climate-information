@@ -23,19 +23,22 @@
     "anemometer_height": 10,
     "station_height": 1.8
   },
-  "climate_zone": [
+  "climate_zones": [
     {
-      "system": "ashrae",
-      "version": "2025",
-      "zone": "5A"
+      "system": "ASHRAE",
+      "system_version": "2025",
+      "source_data_set": "NOAA Integrated Surface Database (ISD)",
+      "source_data_version": "2022",
+      "zone": "5A",
+      "notes": "Based on ASHRAE Handbook - Fundamentals 2025"
     },
     {
-      "system": "ashrae",
+      "system": "ASHRAE",
       "version": "2021",
       "zone": "5A"
     },
     {
-      "system": "iecc",
+      "system": "IECC",
       "version": "2021",
       "zone": "5A"
     }
