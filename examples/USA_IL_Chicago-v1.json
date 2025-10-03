@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "data_model": "IBPSA_BDE",
-    "schema": "CLIMATE_INFORMATION",
+    "schema_author": "IBPSA_BDE",
+    "schema_name": "CLIMATE_INFORMATION",
     "schema_version": "0.1.0",
+    "author": "Big Ladder Software",
     "id": "82cf37f7-271b-481d-a33b-e74b37c03335",
     "description": "Chicago Ohare Intl Ap, IL, USA TMY3",
-    "data_timestamp": "2021-08-23T11:52Z",
-    "data_version": 1,
-    "data_source": "Custom/User Format -- WMO#725300; NREL TMY Data Set (2008); Period of Record 1973-2005 (Generally)"
+    "time_of_creation": "2021-08-23T11:52Z",
+    "version": "1.0.0"
   },
   "location": {
     "name": "Chicago Ohare Intl Ap",

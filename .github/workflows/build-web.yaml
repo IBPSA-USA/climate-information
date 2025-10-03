@@ -17,19 +17,16 @@ jobs:
       run:
         shell: bash
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: bigladder/github-actions/setup-python-poetry@main
+        uses: actions/checkout@v4
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup Hugo
-        uses: bigladder/lattice/.github/actions/setup-hugo@main
-      - name: Build web
-        run: |
-          source $VENV
-          poetry run doit generate_web_docs
+      - name: Build web docs
+        run: uv run doit generate_web_docs
       - name: Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:

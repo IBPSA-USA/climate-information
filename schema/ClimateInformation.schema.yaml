@@ -42,16 +42,16 @@ TimeSeriesType:
   Enumerators:
     INSTANTANEOUS:
       Description: "Instantaneous"
-      Notes: "Values reflect the instant of the current timestamp in the corresponding TimeIntervals data group"
+      Notes: "Values reflect the instant of the current timestamp in the corresponding TimeInterval data group"
     AVERAGE:
       Description: "Average"
-      Notes: "Values reflect the average between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group"
+      Notes: "Values reflect the average between the previous timestamp and the current timestamp in the corresponding TimeInterval data group"
     SUM:
       Description: "Sum"
-      Notes: "Values reflect the integrated sum between the previous timestamp and the current timestamp in the corresponding TimeIntervals data group"
+      Notes: "Values reflect the integrated sum between the previous timestamp and the current timestamp in the corresponding TimeInterval data group"
     CUMULATIVE:
       Description: "Cumulative"
-      Notes: "Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeIntervals data group"
+      Notes: "Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeInterval data group"
 
 ClimateDataType:
   Object Type: "Enumeration"
@@ -72,175 +72,176 @@ ClimateInformation:
   Data Elements:
     metadata:
       Description: "Metadata"
-      Data Type: "{Metadata}"
-      Constraints: "schema=CLIMATE_INFORMATION"
+      Type: "Group(Metadata)"
+      Constraints: schema_name="CLIMATE_INFORMATION"
       Required: True
     location:
       Description: "Location data group"
-      Data Type: "{Location}"
+      Type: "Group(Location)"
       Required: True
     data_sets:
       Description: "An array of climate data sets for this location"
-      Data Type: "[{DataSet}][1..]"
+      Type: "Array(Group(DataSet))"
+      Constraints:
+      - "[1..]"
       Required: True
 
 Location:
   Object Type: "Data Group"
+  Unit System: ClimateUnits
   Data Elements:
     name:
-      Data Type: String
+      Type: String
       Description: "Descriptive name of the weather station location"
       Notes: "Suggest including human-readable identifiers of location, e.g., country, state"
       Required: True
     country_code:
-      Constraints: "[A-Z]{3}"
-      Data Type: String
+      Type: String
       Description: "Country"
       Notes: "ISO Alpha-3 country code"
       Required: True
     subdivision:
-      Data Type: String
+      Type: String
       Description: "Administrative subdivision within a country"
       Notes: "State, province, or other identified region"
     postal_code:
-      Data Type: String
+      Type: String
       Description: "Postal code"
     wmo_station_id:
-      Constraints: "[0-9]{6}"
-      Data Type: String
+      Type: String
       Description: "World Meteorological Organization Station Number"
       Notes: "World Meteorological Organization Station Number"
     latitude:
       Constraints: ">=-90.0, <=90.0"
-      Data Type: Numeric
+      Type: Numeric
       Description: "Latitude relative to the equator"
       Notes: "+ is North, - is South"
       Required: True
-      Unit System: ClimateUnits
       Units: "degrees"
     longitude:
       Constraints: ">=-180.0, <=180.0"
-      Data Type: Numeric
+      Type: Numeric
       Description: "Longitude relative to prime meridian"
       Notes: "+ is East, - is West"
       Required: True
-      Unit System: ClimateUnits
       Units: "degrees"
     time_zone_offset:
       Constraints: ">=-12.0, <=14.0"
-      Data Type: Numeric
+      Type: Numeric
       Description: "Time zone offset relative to UTC"
       Required: True
-      Unit System: ClimateUnits
       Units: "h"
     elevation:
-      Data Type: Numeric
+      Type: Numeric
       Description: "Station elevation relative to sea level (bottom of station)"
       Required: True
       Units: "m"
     anemometer_height:
       Constraints: ">0.0"
-      Data Type: Numeric
+      Type: Numeric
       Description: "Height of anemometer above the ground"
       Notes: "Typically 10 m (potentially move to Time Series Source for Wind Speed/Direction)"
       Required: True
       Units: "m"
     station_height:
       Constraints: ">0.0"
-      Data Type: Numeric
+      Type: Numeric
       Description: "Height of other meteorological measurements above the ground"
       Notes: "Typically 1.8 m"
       Required: True
       Units: "m"
-    terrain_class:
-      Data Type: "<TerrainType>"
-      Description: "Roughness class of terrain surrounding weather station"
-      Notes: "Needs better definition, esp. enumeration of list."
+    # terrain_class:
+    #   Type: "Enumeration(TerrainType)"
+    #   Description: "Roughness class of terrain surrounding weather station"
+    #   Notes: "Needs better definition, esp. enumeration of list."
     wigos_station_id:
-      Data Type: String
+      Type: String
       Description: "WIGOS Station Identifier"
       Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
     wban_station_number:
-      Data Type: String
+      Type: String
       Description: "Weather Bureau Army Navy Number"
-    other_station_identifiers:
-      Data Type: "[{StationIdentifiers}]"
-      Description: "User-defined Station Identifiers"
-      Notes: "List"
+    # other_station_identifiers:
+    #   Type: "[Group(StationIdentifiers)]"
+    #   Description: "User-defined Station Identifiers"
+    #   Notes: "List"
     notes:
-      Data Type: String
+      Type: String
       Description: "Notes"
     maslib_catalog_number:
-      Data Type: String
+      Type: String
       Description: "Master Station Library Catalog Number"
     # ashrae_climate_zone:
-    #   Data Type: "<ASHRAEClimateZone>"
+    #   Type: "Enumeration(ASHRAEClimateZone)"
     #   Description: "ASHRAE Climate Zone"
     #   Notes: "Reference 169-2021"
     # other_climate_zone:
-    #   Data Type: "<ASHRAEClimateZone>"
+    #   Type: "Enumeration(ASHRAEClimateZone)"
 
 DataSet:
   Object Type: Data Group
   Data Elements:
     climate_data_type:
-      Data Type: <ClimateDataType>
+      Type: Enumeration(ClimateDataType)
       Description: Type of climate data
       Required: True
     time_intervals:
-      Data Type: "[{TimeIntervals}]"
+      Type: "Array(Group(TimeInterval))"
       Description: Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups
       Required: True
     time_series:
-      Data Type: "{ClimateTimeSeries}"
+      Type: "Group(ClimateTimeSeries)"
       Description: Data group containing named TimeSeries data elements
       Required: True
     notes:
-      Data Type: String
+      Type: String
       Description: Supplementary information about this dataset
 
-TimeIntervals:
+TimeInterval:
   Object Type: "Data Group"
   Data Elements:
     id:
+      ID: True
+      Type: String
       Description: Reference id
-      Data Type: ID
-      Constraints: ":TimeInterval:"
       Required: True
     starting_time:
       Description: Beginning of data
-      Data Type: Timestamp
+      Type: Timestamp
       Required: False
       Notes: Used to determine the "previous" timestamp for the first value in a time
         series where the time series is not instantaneous
     regular_interval:
       Description: Duration of regular intervals
-      Data Type: Numeric
+      Type: Numeric
       Units: s
       Constraints: ">0"
       Required: if !timestamps
     timestamps:
       Description: Array of timestamps
-      Data Type: "[Timestamp][1..]"
+      Type: "Array(Timestamp)"
+      Constraints: "[1..]"
       Required: if !regular_interval
     labels:
       Description: Informal labels describing each time interval
-      Data Type: "[String][1..]"
+      Type: "Array(String)"
+      Constraints: "[1..]"
       Notes: e.g., Month names for monthly intervals
     notes:
       Description: Notes about each time interval
-      Data Type: "[String][1..]"
+      Type: "Array(String)"
+      Constraints: "[1..]"
 
 ClimateTimeSeries:
   Object Type: Data Group
   Data Elements:
     dry_bulb_temperature:
+      Type: "Group(TimeSeries)"
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
       - value_type=INSTANTANEOUS
       - values.Constraints=">0"
-      Data Type: "{TimeSeries}"
       Description: Dry-bulb temperature
     dew_point_temperature:
       Constraints:
@@ -248,7 +249,7 @@ ClimateTimeSeries:
       - units="K"
       - value_type=INSTANTANEOUS
       - values.Constraints=">0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Dew-point temperature
     relative_humidity:
       Constraints:
@@ -256,7 +257,7 @@ ClimateTimeSeries:
       - units="-"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0, <=1"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Relative humidity
     wet_bulb_temperature:
       Constraints:
@@ -264,7 +265,7 @@ ClimateTimeSeries:
       - units="K"
       - value_type=INSTANTANEOUS
       - values.Constraints=">0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Wet-bulb temperature
     humidity_ratio:
       Constraints:
@@ -272,7 +273,7 @@ ClimateTimeSeries:
       - units="-"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0, <=1"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Humidity Ratio
     atmospheric_pressure:
       Constraints:
@@ -280,7 +281,7 @@ ClimateTimeSeries:
       - units="Pa"
       - value_type=INSTANTANEOUS
       - values.Constraints=">0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Atmospheric pressure
     global_horizontal_irradiance:
       Constraints:
@@ -288,7 +289,7 @@ ClimateTimeSeries:
       - units="W/m2"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Global solar horizontal irradiance (Instantaneous, Power)
       Notes: Instantaneous irradiation received on a horizontal detector.
     direct_normal_irradiance:
@@ -297,7 +298,7 @@ ClimateTimeSeries:
       - units="W/m2"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Direct normal solar irradiance (Instantaneous, Power)
     diffuse_horizontal_irradiance:
       Constraints:
@@ -305,7 +306,7 @@ ClimateTimeSeries:
       - units="W/m2"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Diffuse horizontal irradiance (Instantaneous, Power)
     global_horizontal_irradiation:
       Constraints:
@@ -313,7 +314,7 @@ ClimateTimeSeries:
       - units="J/m2"
       - value_type=SUM
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Global solar horizontal irradiation (Sum, Energy)
       Notes: This quantity is technically insolation, i.e., irradiance from the sun on
         a horizontal detector integrated over time.
@@ -323,7 +324,7 @@ ClimateTimeSeries:
       - units="J/m2"
       - value_type=SUM
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Direct normal solar irradiation (Sum, Energy)
     diffuse_horizontal_irradiation:
       Constraints:
@@ -331,7 +332,7 @@ ClimateTimeSeries:
       - units="J/m2"
       - value_type=SUM
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Diffuse horizontal irradiation (Sum, Energy)
     horizontal_infrared_sky_irradiance:
       Constraints:
@@ -339,7 +340,7 @@ ClimateTimeSeries:
       - units="W/m2"
       - value_type=INSTANTANEOUS
       - values.Constraints=">0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Horizontal infrared sky irradiance (Instantaneous, Power)
       Notes: Integrated power at each wavelength between 3 um and 100 um at an instant
         in time, received on a horizontal detector. Downward flux only. Metadata for this
@@ -351,8 +352,8 @@ ClimateTimeSeries:
       - display_name="Total sky cover"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">= 0, <=1"
-      Data Type: "{TimeSeries}"
+      - values.Constraints=">=0, <=1"
+      Type: "Group(TimeSeries)"
       Description: Total sky cover
       Notes: Fraction of sky dome covered by clouds or obscuring phenomena. Usually measured
         in eights or tenths.
@@ -361,8 +362,8 @@ ClimateTimeSeries:
       - display_name="Opaque sky cover"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">= 0, <=1"
-      Data Type: "{TimeSeries}"
+      - values.Constraints=">=0, <=1"
+      Type: "Group(TimeSeries)"
       Description: Opaque sky cover
       Notes: Fraction of sky dome covered by opaque clouds or obscuring phenomena. Usually
         measured in eights or tenths.
@@ -372,7 +373,7 @@ ClimateTimeSeries:
       - units="m"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Precipitable water
       Notes: Total amount of water in a column of unit area from the elevation of the
         station to the upper troposphere. Includes clouds.
@@ -382,7 +383,7 @@ ClimateTimeSeries:
       - units="-"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Aerosol optical depth
       Notes: Extinction coefficient for a collimated beam traveling through the atmosphere,
         denoting the extinction of a beam as it traverses the atmosphere. The natural
@@ -394,7 +395,7 @@ ClimateTimeSeries:
       - units="lx"
       - value_type=AVERAGE
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Global horizontal illuminance
     direct_normal_illuminance:
       Constraints:
@@ -402,7 +403,7 @@ ClimateTimeSeries:
       - units="lx"
       - value_type=AVERAGE
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Direct normal illuminance
     diffuse_horizontal_illuminance:
       Constraints:
@@ -410,15 +411,14 @@ ClimateTimeSeries:
       - units="lx"
       - value_type=AVERAGE
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Diffuse horizontal illuminance
     wind_direction:
       Constraints:
       - display_name="Wind direction"
       - units="radians"
       - value_type=INSTANTANEOUS
-      - values.Constraints=""
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Wind direction
       Notes: Clockwise from north
     wind_speed:
@@ -426,8 +426,7 @@ ClimateTimeSeries:
       - display_name="Wind speed"
       - units="m/s"
       - value_type=INSTANTANEOUS
-      - values.Constraints=""
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Wind speed
       Notes: Instantaneous wind speed at the time stamp. Wind speed is measured at 10m
         as standard, anything else must be included in metadata.
@@ -436,8 +435,7 @@ ClimateTimeSeries:
       - display_name="Snow depth"
       - units="m"
       - value_type=INSTANTANEOUS
-      - values.Constraints=""
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Snow depth
       Notes: Current observed depth of snow on the ground.
     albedo_ground:
@@ -445,8 +443,8 @@ ClimateTimeSeries:
       - display_name="Albedo - Ground"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">= 0, <=1"
-      Data Type: "{TimeSeries}"
+      - values.Constraints=">=0, <=1"
+      Type: "Group(TimeSeries)"
       Description: Albedo
     liquid_precipitation:
       Constraints:
@@ -454,7 +452,7 @@ ClimateTimeSeries:
       - units="m"
       - value_type=SUM
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Liquid precipitation depth
       Notes: The cumulative depth of precipitation in the past time step.
     particulate_matter_01_0:
@@ -463,7 +461,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Particulate Matter 1.0
       Notes: "PM1.0: Mass of particles of size less than or equal to 1 um (micrometer)
         in one cubic meter of air."
@@ -473,7 +471,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Particulate Matter 2.5
       Notes: "PM2.5: Mass of particles of size less than or equal to 2.5 um (micrometer)
         in one cubic meter of air."
@@ -483,7 +481,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Particulate Matter 4.0
       Notes: "PM4.0: Mass of particles of size less than or equal to 4.0 um (micrometer)
         in one cubic meter of air."
@@ -493,7 +491,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Particulate Matter 5.0
       Notes: "PM5.0: Mass of particles of size less than or equal to 5.0 um (micrometer)
         in one cubic meter of air."
@@ -503,7 +501,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Particulate Matter 10.0
       Notes: "PM10: Mass of particles of size less than or equal to 10 um (micrometer)
         in one cubic meter of air. "
@@ -513,7 +511,7 @@ ClimateTimeSeries:
       - units="ppm"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Carbon Dioxide concentration
       Notes: CO2
     nitrogen_dioxide:
@@ -522,7 +520,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Nitrogen Dioxide concentration
       Notes: NO2
     nitrogen_oxide:
@@ -531,7 +529,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Nitrogen Oxide concentration
       Notes: "NO"
     sulphur_dioxide:
@@ -540,7 +538,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Sulphur Dioxide concentration
       Notes: SO2
     ozone:
@@ -549,7 +547,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Ozone concentration
       Notes: O3
     sky_type:
@@ -557,8 +555,8 @@ ClimateTimeSeries:
       - display_name="Sky Type"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints="-"
-      Data Type: "{TimeSeries}"
+      # - values.Constraints="-"
+      Type: "Group(TimeSeries)"
       Description: Sky Type
       Notes: CIE sky type, enumerated
     ammonia:
@@ -567,7 +565,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Ammonia concentration
       Notes: NH3
     carbon_monoxide:
@@ -576,7 +574,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Carbon Monoxide concentration
       Notes: CO
     formaldehyde:
@@ -585,7 +583,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Formaldehyde
       Notes: HCHO
     turbidity:
@@ -593,8 +591,7 @@ ClimateTimeSeries:
       - display_name="Turbidity"
       - units=""
       - value_type=INSTANTANEOUS
-      - values.Constraints=""
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Turbidity
     lead:
       Constraints:
@@ -602,7 +599,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Lead concentration
       Notes: Pb
     mercury:
@@ -611,7 +608,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Mercury concentration
     benzene:
       Constraints:
@@ -619,7 +616,7 @@ ClimateTimeSeries:
       - units="ug/m3"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Benzene
       Notes: C6H6
     voc:
@@ -628,57 +625,57 @@ ClimateTimeSeries:
       - units="ppb"
       - value_type=INSTANTANEOUS
       - values.Constraints=">=0"
-      Data Type: "{TimeSeries}"
+      Type: "Group(TimeSeries)"
       Description: Total volatile organic compound concentration
 
 TimeSeries:
   Object Type: Data Group
   Data Elements:
     display_name:
-      Data Type: String
+      Type: String
       Description: ""
       Required: true
     units:
-      Data Type: String
+      Type: String
       Description: ""
       Required: true
     value_type:
-      Data Type: <TimeSeriesType>
+      Type: Enumeration(TimeSeriesType)
       Description: ""
       Required: true
     value_time_intervals:
-      Data Type: Reference
       Description: ""
-      Constraints: ":TimeInterval:"
+      Type: "Reference(Group(TimeInterval))"
       Required: true
     values:
-      Data Type: "[Numeric][1..]"
+      Type: "Array(Numeric)"
+      Constraints: "[1..]"
       Description: ""
       Required: true
     source_time_intervals:
-      Data Type: Reference
       Description: ""
-      Constraints: ":TimeInterval:"
+      Type: "Reference(Group(TimeInterval))"
       Required: false
     source:
-      Data Type: "[<DataSourceType>][1..]"
+      Type: "Array(Enumeration(DataSourceType))"
+      Constraints: "[1..]"
       Description: ""
       Required: false
     uncertainty_time_intervals:
-      Data Type: Reference
       Description: ""
-      Constraints: ":TimeInterval:"
+      Type: "Reference(Group(TimeInterval))"
       Required: false
     uncertainty:
-      Data Type: "[Numeric][1..]"
+      Type: "Array(Numeric)"
+      Constraints: "[1..]"
       Description: ""
       Required: false
     notes_time_intervals:
-      Data Type: Reference
       Description: ""
-      Constraints: ":TimeInterval:"
+      Type: "Reference(Group(TimeInterval))"
       Required: false
     notes:
-      Data Type: "[String][1..]"
+      Type: "Array(String)"
+      Constraints: "[1..]"
       Description: ""
       Required: false

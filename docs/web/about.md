@@ -1,5 +1,3 @@
-{{% blocks/cover title="About Climate Information Data Model" height="auto" %}}
-
 This document provides the data model specifications for climate data and was developed through a stakeholder consensus process by the IBPSA-USA Building Data Exchange Committee. It is based on the standard framework and vocabulary provided in the BSR/ASHRAE Standard 205P-Full Public Review #3.
 
 Some notes about this version and its expected evolution:
@@ -9,9 +7,6 @@ Some notes about this version and its expected evolution:
 - Currently the data model only covers metadata fields, location, and time series variables with regular and irregular time intervals. Future versions are expected to include structures for statistically-derived design conditions.
 - This document does not separately consider how the data model should be serialized or the file formats that should be used for publication.
 
-{{% /blocks/cover %}}
-
-{{% blocks/section %}}
 ## Working Group
 
 - Parag Rastogi (Working Group Chair)
@@ -23,9 +18,6 @@ Some notes about this version and its expected evolution:
 - Suhaas Bathur (Building Data Exchange Committee Secretary)
 - Tim McDowell
 
-{{% /blocks/section %}}
-
-{{% blocks/section  %}}
 ## Contributors
 
 - Evyatar Erell
@@ -40,11 +32,6 @@ Some notes about this version and its expected evolution:
 - Dorit Aviv
 - Forrest Meggers
 
-{{% /blocks/section %}}
-
-{{% blocks/section  %}}
 ## Acknowledgements
 
 This data model specification was developed with support from the U.S. Department of Energy.
-
-{{% /blocks/section %}}

@@ -1,17 +1,20 @@
-[tool.poetry]
+[project]
 name = "climate-information"
 version = "0.1.0"
 description = "Climate Information Data Model"
-authors = ["IBPSA-USA"]
+authors = [{ name = "IBPSA-USA" }]
+requires-python = ">=3.10"
+dependencies = ["lattice"]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-lattice = "0.1.4"
-
-[tool.poetry.dev-dependencies]
-doit = "0.36.0"
-tomli = "2.0.1"
+[dependency-groups]
+dev = ["doit"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["climate-information"]
+
+[tool.uv.sources]
+lattice = { git = "https://github.com/bigladder/lattice.git", branch = "additional-232-enhancements" }

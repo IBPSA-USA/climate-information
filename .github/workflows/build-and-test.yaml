@@ -8,22 +8,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.10"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     defaults:
       run:
         shell: bash
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: bigladder/github-actions/setup-python-poetry@main
+        uses: actions/checkout@v4
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup Hugo
-        uses: bigladder/lattice/.github/actions/setup-hugo@main
-      - name: Build and test
-        run: |
-          source $VENV
-          poetry run doit
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Run doit
+        run: uv run doit
