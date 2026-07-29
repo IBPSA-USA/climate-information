@@ -2,7 +2,7 @@ Schema:
   Object Type: "Meta"
   Title: "Climate Information"
   Description: "Schema for describing climate information"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "ClimateInformation"
   Unit Systems:
     ClimateUnits:
@@ -15,7 +15,8 @@ SchemaType:
     CLIMATE_INFORMATION:
       Description: "Climate information"
 
-DataSourceType:
+# TODO: Add more enumerators for SUMMARY data source type, e.g., "measured", "modeled", "reanalysis", "assumption", etc. Rename this to TimeSeries Data Type.
+TimeSeriesDataSourceType:
   Object Type: "Enumeration"
   Enumerators:
     DIRECT_MEASUREMENT:
@@ -53,7 +54,17 @@ TimeSeriesType:
       Description: "Cumulative"
       Notes: "Values reflect the cumulative sum between the starting timestamp and the current timestamp in the corresponding TimeInterval data group"
 
-ClimateDataType:
+SummaryDataSourceType:
+  Object Type: "Enumeration"
+  Enumerators:
+    MEASURED:
+      Description: "Data measured from weather stations or other observational sources near the surface of the Earth. This would normally not include satellite data."
+      Display Text: "Measured"
+    MODELED:
+      Description: "Modeled climate data from a numerical model of the global climate system, or its components, that provide estimates of weather data. These could be future projections, historical reconstructions, or other types of estimates."
+      Display Text: "Modeled"
+
+TimeSeriesClimateDataType:
   Object Type: "Enumeration"
   Enumerators:
     MEASURED:
@@ -75,16 +86,44 @@ ClimateInformation:
       Type: "Group(Metadata)"
       Constraints: schema_name="CLIMATE_INFORMATION"
       Required: True
+      Notes: "The Metadata data group is defined by ASHRAE Standard 232 and is intentionally not redefined in this schema."
     location:
       Description: "Location data group"
       Type: "Group(Location)"
       Required: True
-    data_sets:
-      Description: "An array of climate data sets for this location"
-      Type: "Array(Group(DataSet))"
+    time_series_data_sets:
+      Description: "An array of time series climate data sets for this location"
+      Type: "Array(Group(TimeSeriesDataSet))"
       Constraints:
       - "[1..]"
+    summary_data_sets:
+      Description: "An array of summary climate data sets for this location"
+      Type: "Array(Group(SummaryDataSet))"
+      Constraints:
+      - "[1..]"
+
+ClimateZone:
+  Object Type: "Data Group"
+  Data Elements:
+    system:
+      Type: String
+      Description: "Climate zone classification system"
       Required: True
+    system_version:
+      Type: String
+      Description: "Version of the climate zone classification system"
+      Required: True
+    source_data_set:
+      Type: String
+      Description: "Informative notes on the data set used to determine climate zone"
+    zone:
+      Type: String
+      Description: "Climate zone within the classification system"
+      Required: True
+    notes: 
+      Type: String
+      Description: "Informative notes about the climate zone classification"
+    
 
 Location:
   Object Type: "Data Group"
@@ -111,6 +150,34 @@ Location:
       Type: String
       Description: "World Meteorological Organization Station Number"
       Notes: "World Meteorological Organization Station Number"
+    wmo_station_class:
+      Type: Integer
+      # TODO: Confirm enumeration of WMO station classes, and whether this should be an enumeration or integer.
+      Constraints: ">=1, <=5"
+      Description: "World Meteorological Organization Station Class"
+      Notes: "World Meteorological Organization Station Class, 1-3 for surface stations, 4 for upper air stations, 5 for ship-based stations, 6 for buoy-based stations, 7 for other platforms."
+    wmo_region:
+      Type: Integer
+      Constraints: ">=1, <=6"
+      Description: "World Meteorological Organization Regional Association area"
+      Notes: "1=Africa, 2=Asia, 3=South America, 4=North/Central America and the Caribbean, 5=South-West Pacific, 6=Europe. Corresponds to the ASHRAE Handbook - Fundamentals 'Region' column."
+    wigos_station_id:
+    # TODO: Add patterns for WIGOS, WBAN, IATA, and ICAO station identifiers. For WIGOS, see https://oscar.wmo.int/surface/index.html. For WBAN, see https://www.ncei.noaa.gov/data/global-hourly/doc/wban-station-ids.pdf. For IATA, see https://en.wikipedia.org/wiki/List_of_airports_by_IATA_code:_A. For ICAO, see https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_A.
+      Type: String
+      Description: "WIGOS Station Identifier"
+      Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
+    wban_station_id:
+      Type: String
+      Description: "Weather Bureau Army Navy Identifier"
+    iata_station_id:
+      Type: String
+      Description: "International Air Transport Association Station Identifier"
+    icao_station_id:
+      Type: String
+      Description: "International Civil Aviation Organization Station Identifier"
+    maslib_catalog_number: # TODO: Confirm name with Sagar
+      Type: String
+      Description: "Master Station Library Catalog Number"
     latitude:
       Constraints: ">=-90.0, <=90.0"
       Type: Numeric
@@ -128,12 +195,16 @@ Location:
     time_zone_offset:
       Constraints: ">=-12.0, <=14.0"
       Type: Numeric
-      Description: "Time zone offset relative to UTC"
+      Description: "Time zone offset relative to UTC at time of dataset creation"
       Required: True
       Units: "h"
+    iana_time_zone_code:
+      Type: String # TODO: Make this an enumeration of valid IANA time zone codes, not free-form string. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      Description: "IANA time zone code"
+      Required: True
     elevation:
       Type: Numeric
-      Description: "Station elevation relative to sea level (bottom of station)"
+      Description: "Station elevation relative to sea level (bottom of station). To calculate the US standard pressure see Chapter 1 of ASHRAE Handbook - Fundamentals 2025."
       Required: True
       Units: "m"
     anemometer_height:
@@ -150,41 +221,61 @@ Location:
       Notes: "Typically 1.8 m"
       Required: True
       Units: "m"
-    # terrain_class:
-    #   Type: "Enumeration(TerrainType)"
-    #   Description: "Roughness class of terrain surrounding weather station"
-    #   Notes: "Needs better definition, esp. enumeration of list."
-    wigos_station_id:
-      Type: String
-      Description: "WIGOS Station Identifier"
-      Notes: "WMO Integrated Global Observing System, [https://oscar.wmo.int/surface/index.html](https://oscar.wmo.int/surface/index.html)"
-    wban_station_number:
-      Type: String
-      Description: "Weather Bureau Army Navy Number"
-    # other_station_identifiers:
-    #   Type: "[Group(StationIdentifiers)]"
-    #   Description: "User-defined Station Identifiers"
-    #   Notes: "List"
     notes:
       Type: String
       Description: "Notes"
-    maslib_catalog_number:
-      Type: String
-      Description: "Master Station Library Catalog Number"
-    # ashrae_climate_zone:
-    #   Type: "Enumeration(ASHRAEClimateZone)"
-    #   Description: "ASHRAE Climate Zone"
-    #   Notes: "Reference 169-2021"
-    # other_climate_zone:
-    #   Type: "Enumeration(ASHRAEClimateZone)"
+    climate_zones:
+      Type: "Array(Group(ClimateZone))"
+      Description: "Climate zones for this location"
+      Notes: "Climate zone object refers to list of climate zone classifications that are applicable to this location _only_, not necessarily applicable to a \"nearby\" site"
+    quality_flags:
+      Type: "Array(String)"
+      Description: "Quality flags for this location"
+      Notes: ["User-defined quality flags for this location", "Not intended to be a comprehensive list of all quality flags that may be relevant to this location, but rather a user-defined list of important quality flags that may be referenced in the TimeSeries data groups within the TimeSeriesDataSet data group(s)"]
 
-DataSet:
+SourceDataPeriod:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      ID: True
+      Type: String
+      Description: Reference id
+      Required: True
+    start_time:
+      Type: Timestamp
+      Description: Starting time of source data period
+      Required: True
+    end_time:
+      Type: Timestamp
+      Description: Ending time of source data period
+      Required: True
+    notes:
+      Type: String
+      Description: Notes about this source data period
+    ashrae_grade:
+      Type: String
+      Constraints: '["A", "B", "C", "D", "E"]'
+      Description: ASHRAE grade of source data period based on ASHRAE Handbook - Fundamentals 2025 criteria for grade A-E
+
+SummaryDataSet:
+  Object Type: "Data Group"
+  Data Elements:
+    source_data_periods:
+      Type: "Array(Group(SourceDataPeriod))"
+      Description: Array of SourceDataPeriod data groups describing the time periods of the source data used to create this summary dataset
+      Required: True
+    summary_data:
+      Type: "Group(ClimateSummaryData)"
+      Description: Data group containing named summary data elements
+      Required: True
+    notes:
+      Type: String
+      Description: Supplementary information about this dataset
+    
+
+TimeSeriesDataSet:
   Object Type: Data Group
   Data Elements:
-    climate_data_type:
-      Type: Enumeration(ClimateDataType)
-      Description: Type of climate data
-      Required: True
     time_intervals:
       Type: "Array(Group(TimeInterval))"
       Description: Array of TimeInterval data groups whose ids may be referenced within TimeSeries data groups
@@ -231,6 +322,223 @@ TimeInterval:
       Description: Notes about each time interval
       Type: "Array(String)"
       Constraints: "[1..]"
+
+# TODO: Constraints the way they are written now may be redundant.
+# TODO: Add all the summary statistics variables from the ashrae design weather data set.
+ClimateSummaryData:
+  Object Type: "Data Group"
+  Data Elements:
+    dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      # For all numerical values below, this constraint must apply. What is the syntax for such an instruction?
+      # Enumerating every instance/statistics is potentially redundant and too verbose, since the same could be achieved by taking a "join" of the constraints on the individual statistical elements. E.g., all statistics for dry-bulb temperature should have the unit "K" and values ">0", *unless* otherwise defined for a specific statistic, e.g., return period or variance.
+      # - annual.mean.Constraints=">0"
+      # - annual.mean.Units="K"
+      # - monthly.mean.Constraints=">0"
+      # - monthly.mean.Units="K"
+      # - annual.standard_deviation.Constraints=">=0"
+      # - annual.standard_deviation.Units="K"
+      Description: Dry-bulb temperature
+    dew_point_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dew-point temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Dew-point temperature
+    relative_humidity:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Relative humidity"
+      - units="-"
+      # - values.Constraints=">=0, <=1"
+      Description: Relative humidity
+    dry_bulb_temperature_coincident_mean_wet_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with mean wet-bulb temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Dry-bulb temperature coincident with mean wet-bulb temperature
+    dry_bulb_temperature_coincident_mean_wind_speed:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="MCWS/DB"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Mean wind speed coincident with given dry-bulb temperature statistic
+    daily_average_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Daily average dry-bulb temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Daily average dry-bulb temperature
+      Notes: This is the sum of the daily minimum and maximum temperatures divided by 2. Generally used to estimate monthly degree days.
+    liquid_precipitation_depth:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Liquid precipitation depth"
+      - units="m"
+      # - values.Constraints=">=0"
+      Description: Liquid precipitation depth
+      Notes: The cumulative depth of precipitation in the past time step.
+    heating_degree_days:
+      Type: Array(Group(DegreeDays))
+      Constraints:
+      - units="K-day"
+      # - values.Constraints=">=0"
+      Description: Heating degree days
+      Notes: Array of heating degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is below a base temperature, typically used for estimating heating energy requirements.
+    cooling_degree_days:
+      Type: Array(Group(DegreeDays))
+      Constraints:
+      - units="K-day"
+      # - values.Constraints=">=0"
+      Description: Cooling degree days
+      Notes: Array of cooling degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is above a base temperature, typically used for estimating cooling energy requirements.
+    wet_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Wet-bulb temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Wet-bulb temperature
+      Notes: "Covers the ASHRAE annual and monthly design wet-bulb conditions (Evaporation WB), the extreme maximum wet-bulb (annual.maximum), and the extreme annual mean/standard deviation of the minimum/maximum wet-bulb."
+    wind_speed:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Wind speed"
+      - units="m/s"
+      # - values.Constraints=">=0"
+      Description: Wind speed
+      Notes: "Wind speed at the anemometer height (typically 10 m). Covers the ASHRAE average annual/monthly wind speed (mean) and the extreme annual wind speed (percent_exceedance at 1/2.5/5%)."
+    enthalpy:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Enthalpy"
+      - units="J/kg"
+      # - values.Constraints=">=0"
+      Description: Moist-air specific enthalpy
+      Notes: "Derivable from dry-bulb temperature, humidity, and station pressure; included for convenience to support the ASHRAE annual enthalpy design conditions (percent_exceedance at 0.4/1/2%)."
+    dew_point_temperature_coincident_mean_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with dew-point temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Mean dry-bulb temperature coincident with a given dew-point temperature statistic
+      Notes: "ASHRAE humidification (99.0/99.6%) and dehumidification (0.4/1/2%) MCDB. The percent_time_exceeded grid refers to the percentile of the dew-point temperature."
+    wet_bulb_temperature_coincident_mean_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with wet-bulb temperature"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Mean dry-bulb temperature coincident with a given wet-bulb temperature statistic
+      Notes: "ASHRAE evaporation (Evaporation WB/MCDB) and monthly design wet-bulb MCDB. The percent_time_exceeded grid refers to the percentile of the wet-bulb temperature."
+    dry_bulb_temperature_coincident_prevailing_wind_direction:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Prevailing wind direction coincident with dry-bulb temperature"
+      - units="radians"
+      # - values.Constraints=">=0, <=6.283185307179586"
+      Description: Prevailing (most frequent) wind direction coincident with a given dry-bulb temperature statistic
+      Notes: "ASHRAE PCWD to the 99.6% (heating) and 0.4% (cooling) design dry-bulb temperatures. Clockwise from north."
+    enthalpy_coincident_mean_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with enthalpy"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Mean dry-bulb temperature coincident with a given enthalpy statistic
+      Notes: "ASHRAE enthalpy MCDB at the 0.4/1/2% annual enthalpy design conditions."
+    wind_speed_coincident_mean_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Dry-bulb temperature coincident with wind speed"
+      - units="K"
+      # - values.Constraints=">0"
+      Description: Mean dry-bulb temperature coincident with a given wind-speed statistic
+      Notes: "ASHRAE coldest-month wind speed MCDB at the 0.4/1% design wind speeds."
+    clear_sky_beam_optical_depth:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Clear-sky beam (pseudo-)optical depth"
+      - units="-"
+      # - values.Constraints=">=0"
+      Description: Clear-sky beam pseudo-optical depth (taub)
+      Notes: "Monthly ASHRAE clear-sky beam optical depth (taub) for the 21st day of each month, used with the ASHRAE clear-sky solar model (Chapter 14). The clear-sky noon beam/diffuse irradiances derived from taub/taud are intentionally excluded (derivable)."
+    clear_sky_diffuse_optical_depth:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Clear-sky diffuse (pseudo-)optical depth"
+      - units="-"
+      # - values.Constraints=">=0"
+      Description: Clear-sky diffuse pseudo-optical depth (taud)
+      Notes: "Monthly ASHRAE clear-sky diffuse optical depth (taud) for the 21st day of each month."
+    daily_all_sky_solar_irradiation:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Daily all-sky global horizontal solar irradiation"
+      - units="J/m2"
+      # - values.Constraints=">=0"
+      Description: Average daily all-sky global horizontal solar irradiation
+      Notes: "ASHRAE all-sky average monthly global horizontal radiation (mean) and its standard deviation, expressed as energy per unit area per day."
+    daily_dry_bulb_temperature_range:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Mean daily dry-bulb temperature range"
+      - units="K"
+      # - values.Constraints=">=0"
+      Description: Mean daily dry-bulb temperature range
+      Notes: "ASHRAE mean daily dry-bulb temperature range by month. This is a temperature difference, so its numeric value is identical in kelvin and degrees Celsius. The Hottest Month DB Range equals this variable in the hottest month and is therefore not stored separately."
+    daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Mean daily dry-bulb temperature range at the design dry-bulb temperature"
+      - units="K"
+      # - values.Constraints=">=0"
+      Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
+      Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design dry-bulb temperature, by month."
+    daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Mean daily wet-bulb temperature range at the design dry-bulb temperature"
+      - units="K"
+      # - values.Constraints=">=0"
+      Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
+      Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design dry-bulb temperature, by month."
+    daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Mean daily dry-bulb temperature range at the design wet-bulb temperature"
+      - units="K"
+      # - values.Constraints=">=0"
+      Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
+      Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design wet-bulb temperature, by month."
+    daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature:
+      Type: Group(SummaryData)
+      Constraints:
+      - display_name="Mean daily wet-bulb temperature range at the design wet-bulb temperature"
+      - units="K"
+      # - values.Constraints=">=0"
+      Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
+      Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design wet-bulb temperature, by month."
+    coldest_month:
+      Type: Integer
+      Constraints: ">=1, <=12"
+      Description: Index (1-12) of the coldest month (lowest mean daily dry-bulb temperature)
+      Notes: "Convenience index derived from the monthly mean dry-bulb temperatures (1=January). Included for parity with the ASHRAE design data; trivially derivable. Unlike the other elements of this group it is a plain integer rather than a SummaryData group."
+    hottest_month:
+      Type: Integer
+      Constraints: ">=1, <=12"
+      Description: Index (1-12) of the hottest month (highest mean daily dry-bulb temperature)
+      Notes: "Convenience index derived from the monthly mean dry-bulb temperatures (1=January). Included for parity with the ASHRAE design data; trivially derivable. Unlike the other elements of this group it is a plain integer rather than a SummaryData group."
 
 ClimateTimeSeries:
   Object Type: Data Group
@@ -628,6 +936,146 @@ ClimateTimeSeries:
       Type: "Group(TimeSeries)"
       Description: Total volatile organic compound concentration
 
+SummaryData:
+  # TODO: Should this continued to be called "SummaryData" or something like "elements", "parameters", or "variables"?
+  Object Type: "Data Group"
+  Data Elements:
+    display_name:
+      Type: String
+      Description: ""
+      Required: true
+    units:
+      Type: String
+      Description: ""
+      Required: true
+    source_data_period:
+      Description: "Reference to the source data period defined in the parent summary data set"
+      Type: "Reference(Group(SourceDataPeriod))"
+      Required: true
+    source_data_type:
+      Type: Enumeration(SummaryDataSourceType)
+      Description: "The type of source data for this summary data element"
+      Required: true
+    annual: 
+      Type: "Group(Statistics)"
+      Description: "Annual summary data element"
+    monthly: 
+      Type: "Array(Group(Statistics))"
+      Constraints: "[12]"
+      Description: "Monthly summary data element"
+    notes:
+      Type: String
+      Description: "Notes about this summary data element"
+
+
+Statistics:
+  Object Type: "Data Group"
+  Data Elements:
+    mean:
+      Type: Numeric
+      Description: "Arithmetic mean of the data"
+    standard_deviation:
+      Type: Numeric
+      Description: "Standard deviation of the data"
+    mean_minimum:
+      Type: Numeric
+      Description: "Mean of the minimum values for each year in the source data period"
+    mean_maximum:
+      Type: Numeric
+      Description: "Mean of the maximum values for each year in the source data period"
+    standard_deviation_minimum:
+      Type: Numeric
+      Description: "Standard deviation of the minimum values for each year in the source data period"
+    standard_deviation_maximum:
+      Type: Numeric
+      Description: "Standard deviation of the maximum values for each year in the source data period"
+    maximum:
+      Type: Numeric
+      Description: "Maximum (single highest) value observed during the source data period"
+      Notes: "e.g., the ASHRAE Extreme Maximum Wet-Bulb temperature, or the maximum monthly/annual precipitation total"
+    minimum:
+      Type: Numeric
+      Description: "Minimum (single lowest) value observed during the source data period"
+      Notes: "e.g., the minimum monthly/annual precipitation total"
+    percent_exceedance:
+      # This does not have to be this way. We can use only percent time exceedance here instead of Alternative. In this case, for coincident variables, the schema can look back to the corresponding percent time exceedance of the base variable.
+      Type: "Alternative(Group(PercentTimeExceedance), Group(PercentTimeExceedanceCoincident))"
+      Description: "Array of percent time exceedance values for this summary data element"
+
+StatisticType:
+  Object Type: "Enumeration"
+  Enumerators:
+    SINGLE_VALUE:
+      Description: "Single value exceeding a certain threshold during the source data period. Derived from the distribution of the value in the source data."
+    COINCIDENT_VALUES:
+      Description: "Values coincident with another variable exceeding a certain threshold. Derived from the joint distribution of a variable and another variable in the source data."
+
+PercentTimeExceedanceGridVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    percent_time_exceeded:
+      Type: Array(Numeric)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
+      Constraints: ">=0, <=100"
+      Units: "%"
+
+PercentTimeExceedanceLookupVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    values:
+      Type: Array(Numeric)
+      Description: "Threshold values for percent time exceedance"
+
+PercentTimeExceedanceCoincidentLookupVariables:
+  Object Type: "Data Group"
+  Data Elements:
+    values:
+      Type: Array(Numeric)
+      Description: "Base-variable value at each percent_time_exceeded grid point (the variable whose percentile the grid describes)"
+      Notes: "Unit is that of the base variable named in the coincident summary variable (e.g., dry-bulb temperature in K); it is not restated here."
+    coincident_values:
+      Type: Array(Numeric)
+      Description: "Mean coincident value of the second variable at the same percent_time_exceeded grid point"
+      Notes: "Unit is that of the coincident variable named in the coincident summary variable (e.g., mean wet-bulb temperature in K, or mean dry-bulb temperature coincident with enthalpy in K); it is not restated here. Both arrays draw their units from the model's SI-base definition of each named quantity."
+
+PercentTimeExceedance:
+  Object Type: "Data Group"
+  Data Elements:
+    grid_variables:
+      Type: Group(PercentTimeExceedanceGridVariables)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period"
+    lookup_variables:
+      Type: Group(PercentTimeExceedanceLookupVariables)
+      Description: "Threshold values for percent time exceedance"
+
+PercentTimeExceedanceCoincident:
+  Object Type: "Data Group"
+  Data Elements:
+    grid_variables:
+      Type: Group(PercentTimeExceedanceGridVariables)
+      Description: "Percent of time that the value exceeded a certain threshold during the source data period, coincident with another variable exceeding a certain threshold"
+    lookup_variables:
+      Type: Group(PercentTimeExceedanceCoincidentLookupVariables)
+      Description: "Threshold values for percent time exceedance coincident with another variable exceeding a certain threshold"
+
+DegreeDays:
+  Object Type: "Data Group"
+  Data Elements:
+    base_temperature:
+      Type: Numeric
+      Description: "Base temperature for degree day calculation"
+      Units: "K"
+      Constraints: ">0"
+    annual:
+      Type: Numeric
+      Description: "Degree days calculated as the sum of the differences between the daily average temperature (min+max / 2) and the base temperature for each day in the source data period where the daily average temperature exceeds the base temperature"
+      Units: "K-day"
+    monthly:
+      Type: "Array(Numeric)"
+      Description: "Degree days calculated as the sum of the differences between the daily average temperature (min+max / 2) and the base temperature for each day in each month of the source data period where the daily average temperature exceeds the base temperature"
+      Constraints: "[12]"
+      Units: "K-day"
+
 TimeSeries:
   Object Type: Data Group
   Data Elements:
@@ -657,7 +1105,7 @@ TimeSeries:
       Type: "Reference(Group(TimeInterval))"
       Required: false
     source:
-      Type: "Array(Enumeration(DataSourceType))"
+      Type: "Array(Enumeration(TimeSeriesDataSourceType))"
       Constraints: "[1..]"
       Description: ""
       Required: false

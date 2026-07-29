@@ -5,3 +5,5 @@ build/
 .vscode/
 __pycache__/
 .lattice/
+.DS_Store
+.env

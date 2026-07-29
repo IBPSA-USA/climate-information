@@ -1,0 +1,1378 @@
+{
+  "metadata": {
+    "data_model": "IBPSA_BDE",
+    "schema": "CLIMATE_INFORMATION",
+    "schema_version": "0.2.0",
+    "id": "",
+    "description": "Glasgow Bishopton, Scotland, GBR - ASHRAE Design Conditions 2025",
+    "data_timestamp": "2026-06-12T10:00Z",
+    "data_version": 2,
+    "data_source": "[THIS IS A SCHEMA EXAMPLE. Values are taken from the ASHRAE Handbook - Fundamentals 2025 design-conditions spreadsheet and converted to SI base units; it is provided to illustrate the data model, not as an authoritative data source.] WMO#03134; ASHRAE Handbook - Fundamentals 2025.",
+    "copyright_holder": "IBPSA USA",
+    "copyright_year": 2026,
+    "licensee": "IBPSA USA BDE Climate Working Group",
+    "license": "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
+  },
+  "location": {
+    "name": "Glasgow Bishopton",
+    "country_code": "GBR",
+    "subdivision": "Scotland",
+    "wmo_region": 6,
+    "wmo_station_id": "03134",
+    "wigos_station_id": "0-20000-0-03134",
+    "wmo_station_class": 1,
+    "latitude": 55.9067,
+    "longitude": -4.5325,
+    "time_zone_offset": 0.0,
+    "iana_time_zone_code": "Europe/London",
+    "elevation": 59.0,
+    "anemometer_height": 10,
+    "station_height": 1.8,
+    "climate_zones": [
+      {
+        "system": "ASHRAE 169",
+        "system_version": "2025",
+        "source_data_set": "ASHRAE Handbook - Fundamentals 2025",
+        "zone": "5A",
+        "notes": "Zone as reported in the ASHRAE HOF 2025 design-conditions data set."
+      },
+      {
+        "system": "Koppen-Geiger",
+        "system_version": "Beck et al. 2018",
+        "source_data_set": "Beck et al. 2018",
+        "zone": "Cfb",
+        "notes": "Temperate oceanic climate."
+      }
+    ],
+    "notes": "Station data from ASHRAE Handbook - Fundamentals 2025. IANA time zone Europe/London; ASHRAE time zone code EUW. No WBAN identifier (the station is outside the US WBAN network)."
+  },
+  "summary_data_sets": [
+    {
+      "source_data_periods": [
+        {
+          "id": "Handbook 2025 period of record",
+          "start_time": "2003-01-01",
+          "end_time": "2023-12-31",
+          "notes": "Grade A: at least 30 years of hourly data (ASHRAE HOF 2025).",
+          "ashrae_grade": "A"
+        },
+        {
+          "id": "Handbook 2025 solar period of record",
+          "start_time": "2004-10-01",
+          "end_time": "2023-09-30",
+          "notes": "Solar period of record to the most recent available year (ASHRAE HOF 2025).",
+          "ashrae_grade": "C"
+        }
+      ],
+      "climate_data_type": "MEASURED",
+      "notes": "Example file generated from the ASHRAE Handbook - Fundamentals 2025 design conditions. Values converted to SI base units (K, m, J/kg, J/m2, radians).",
+      "summary_data": {
+        "dry_bulb_temperature": {
+          "display_name": "Dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "mean": 282.35,
+            "standard_deviation": 4.78,
+            "mean_minimum": 267.05,
+            "mean_maximum": 300.05,
+            "standard_deviation_minimum": 2.4,
+            "standard_deviation_maximum": 2.0,
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0,
+                  99.0,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  296.35,
+                  294.45,
+                  292.85,
+                  270.65,
+                  269.05
+                ]
+              }
+            }
+          },
+          "monthly": [
+            {
+              "mean": 277.35,
+              "standard_deviation": 2.98,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.65
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 277.75,
+              "standard_deviation": 2.65,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.75
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 278.95,
+              "standard_deviation": 2.64,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    288.95
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 281.25,
+              "standard_deviation": 2.36,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.95
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 283.95,
+              "standard_deviation": 2.62,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    296.45
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 286.85,
+              "standard_deviation": 2.22,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    298.55
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 288.45,
+              "standard_deviation": 2.11,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    299.65
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 287.85,
+              "standard_deviation": 1.92,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    297.55
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 285.95,
+              "standard_deviation": 2.32,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    295.15
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 282.85,
+              "standard_deviation": 2.42,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    289.65
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 279.75,
+              "standard_deviation": 3.02,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    287.35
+                  ]
+                }
+              }
+            },
+            {
+              "mean": 277.55,
+              "standard_deviation": 3.6,
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    285.35
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "dew_point_temperature": {
+          "display_name": "Dew-point temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0,
+                  99.0,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  289.85,
+                  289.05,
+                  288.25,
+                  268.35,
+                  266.95
+                ]
+              }
+            }
+          }
+        },
+        "wet_bulb_temperature": {
+          "display_name": "Wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "mean_minimum": 266.65,
+            "mean_maximum": 293.25,
+            "standard_deviation_minimum": 2.3,
+            "standard_deviation_maximum": 1.0,
+            "maximum": 295.55,
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  291.25,
+                  290.25,
+                  289.35
+                ]
+              }
+            }
+          },
+          "monthly": [
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    283.85
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    283.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.45
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    286.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    290.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    293.15
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    292.75
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    291.35
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    288.25
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    286.25
+                  ]
+                }
+              }
+            },
+            {
+              "percent_exceedance": {
+                "grid_variables": {
+                  "percent_time_exceeded": [
+                    0.4
+                  ]
+                },
+                "lookup_variables": {
+                  "values": [
+                    284.75
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "enthalpy": {
+          "display_name": "Enthalpy",
+          "units": "J/kg",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  51400.0,
+                  48300.0,
+                  45600.0
+                ]
+              }
+            }
+          }
+        },
+        "wind_speed": {
+          "display_name": "Wind speed",
+          "units": "m/s",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "mean": 3.8,
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  1.0,
+                  2.5,
+                  5.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  10.6,
+                  9.3,
+                  8.3
+                ]
+              }
+            }
+          },
+          "monthly": [
+            {
+              "mean": 4.2
+            },
+            {
+              "mean": 4.3
+            },
+            {
+              "mean": 4.2
+            },
+            {
+              "mean": 4.0
+            },
+            {
+              "mean": 3.8
+            },
+            {
+              "mean": 3.5
+            },
+            {
+              "mean": 3.3
+            },
+            {
+              "mean": 3.4
+            },
+            {
+              "mean": 3.6
+            },
+            {
+              "mean": 3.7
+            },
+            {
+              "mean": 3.8
+            },
+            {
+              "mean": 4.0
+            }
+          ]
+        },
+        "dry_bulb_temperature_coincident_mean_wet_bulb_temperature": {
+          "display_name": "Mean wet-bulb temperature coincident with design dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  296.35,
+                  294.45,
+                  292.85
+                ],
+                "coincident_values": [
+                  290.45,
+                  289.35,
+                  288.55
+                ]
+              }
+            }
+          }
+        },
+        "dry_bulb_temperature_coincident_mean_wind_speed": {
+          "display_name": "Mean wind speed coincident with design dry-bulb temperature",
+          "units": "m/s",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
+                  3.5,
+                  1.5
+                ]
+              }
+            }
+          }
+        },
+        "dry_bulb_temperature_coincident_prevailing_wind_direction": {
+          "display_name": "Prevailing wind direction coincident with design dry-bulb temperature",
+          "units": "radians",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  296.35,
+                  269.05
+                ],
+                "coincident_values": [
+                  1.7453,
+                  5.7596
+                ]
+              }
+            }
+          }
+        },
+        "dew_point_temperature_coincident_mean_dry_bulb_temperature": {
+          "display_name": "Mean dry-bulb temperature coincident with design dew-point temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0,
+                  99.0,
+                  99.6
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  289.85,
+                  289.05,
+                  288.25,
+                  268.35,
+                  266.95
+                ],
+                "coincident_values": [
+                  292.65,
+                  291.55,
+                  290.55,
+                  272.45,
+                  271.35
+                ]
+              }
+            }
+          }
+        },
+        "wet_bulb_temperature_coincident_mean_dry_bulb_temperature": {
+          "display_name": "Mean dry-bulb temperature coincident with design wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  291.25,
+                  290.25,
+                  289.35
+                ],
+                "coincident_values": [
+                  294.95,
+                  293.25,
+                  291.95
+                ]
+              }
+            }
+          }
+        },
+        "enthalpy_coincident_mean_dry_bulb_temperature": {
+          "display_name": "Mean dry-bulb temperature coincident with design enthalpy",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0,
+                  2.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  51400.0,
+                  48300.0,
+                  45600.0
+                ],
+                "coincident_values": [
+                  295.05,
+                  293.35,
+                  291.95
+                ]
+              }
+            }
+          }
+        },
+        "wind_speed_coincident_mean_dry_bulb_temperature": {
+          "display_name": "Mean dry-bulb temperature coincident with coldest-month design wind speed",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "percent_exceedance": {
+              "grid_variables": {
+                "percent_time_exceeded": [
+                  0.4,
+                  1.0
+                ]
+              },
+              "lookup_variables": {
+                "values": [
+                  14.1,
+                  12.7
+                ],
+                "coincident_values": [
+                  280.55,
+                  281.45
+                ]
+              }
+            }
+          }
+        },
+        "daily_average_dry_bulb_temperature": {
+          "display_name": "Daily average dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "mean": 282.35,
+            "standard_deviation": 4.78
+          },
+          "monthly": [
+            {
+              "mean": 277.35,
+              "standard_deviation": 2.98
+            },
+            {
+              "mean": 277.75,
+              "standard_deviation": 2.65
+            },
+            {
+              "mean": 278.95,
+              "standard_deviation": 2.64
+            },
+            {
+              "mean": 281.25,
+              "standard_deviation": 2.36
+            },
+            {
+              "mean": 283.95,
+              "standard_deviation": 2.62
+            },
+            {
+              "mean": 286.85,
+              "standard_deviation": 2.22
+            },
+            {
+              "mean": 288.45,
+              "standard_deviation": 2.11
+            },
+            {
+              "mean": 287.85,
+              "standard_deviation": 1.92
+            },
+            {
+              "mean": 285.95,
+              "standard_deviation": 2.32
+            },
+            {
+              "mean": 282.85,
+              "standard_deviation": 2.42
+            },
+            {
+              "mean": 279.75,
+              "standard_deviation": 3.02
+            },
+            {
+              "mean": 277.55,
+              "standard_deviation": 3.6
+            }
+          ]
+        },
+        "liquid_precipitation_depth": {
+          "display_name": "Liquid precipitation depth",
+          "units": "m",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "annual": {
+            "mean": 1.063,
+            "standard_deviation": 0.15,
+            "maximum": 1.348,
+            "minimum": 0.81
+          },
+          "monthly": [
+            {
+              "mean": 0.12,
+              "standard_deviation": 0.05,
+              "maximum": 0.23,
+              "minimum": 0.035
+            },
+            {
+              "mean": 0.086,
+              "standard_deviation": 0.054,
+              "maximum": 0.218,
+              "minimum": 0.006
+            },
+            {
+              "mean": 0.093,
+              "standard_deviation": 0.045,
+              "maximum": 0.18,
+              "minimum": 0.017
+            },
+            {
+              "mean": 0.054,
+              "standard_deviation": 0.027,
+              "maximum": 0.11,
+              "minimum": 0.005
+            },
+            {
+              "mean": 0.059,
+              "standard_deviation": 0.037,
+              "maximum": 0.143,
+              "minimum": 0.007
+            },
+            {
+              "mean": 0.058,
+              "standard_deviation": 0.024,
+              "maximum": 0.1,
+              "minimum": 0.01
+            },
+            {
+              "mean": 0.065,
+              "standard_deviation": 0.034,
+              "maximum": 0.147,
+              "minimum": 0.012
+            },
+            {
+              "mean": 0.078,
+              "standard_deviation": 0.045,
+              "maximum": 0.164,
+              "minimum": 0.012
+            },
+            {
+              "mean": 0.101,
+              "standard_deviation": 0.055,
+              "maximum": 0.258,
+              "minimum": 0.011
+            },
+            {
+              "mean": 0.118,
+              "standard_deviation": 0.06,
+              "maximum": 0.249,
+              "minimum": 0.03
+            },
+            {
+              "mean": 0.118,
+              "standard_deviation": 0.046,
+              "maximum": 0.189,
+              "minimum": 0.017
+            },
+            {
+              "mean": 0.113,
+              "standard_deviation": 0.051,
+              "maximum": 0.237,
+              "minimum": 0.03
+            }
+          ]
+        },
+        "heating_degree_days": [
+          {
+            "base_temperature": 283.15,
+            "units": "K-day",
+            "annual": 871
+          },
+          {
+            "base_temperature": 291.45,
+            "units": "K-day",
+            "annual": 3325
+          }
+        ],
+        "cooling_degree_days": [
+          {
+            "base_temperature": 283.15,
+            "units": "K-day",
+            "annual": 594
+          },
+          {
+            "base_temperature": 291.45,
+            "units": "K-day",
+            "annual": 7
+          }
+        ],
+        "clear_sky_beam_optical_depth": {
+          "display_name": "Clear-sky beam pseudo-optical depth (taub)",
+          "units": "-",
+          "source_data_period": "Handbook 2025 solar period of record",
+          "source_data_type": "MODELED",
+          "monthly": [
+            {
+              "mean": 0.338
+            },
+            {
+              "mean": 0.34
+            },
+            {
+              "mean": 0.361
+            },
+            {
+              "mean": 0.375
+            },
+            {
+              "mean": 0.384
+            },
+            {
+              "mean": 0.39
+            },
+            {
+              "mean": 0.386
+            },
+            {
+              "mean": 0.375
+            },
+            {
+              "mean": 0.366
+            },
+            {
+              "mean": 0.345
+            },
+            {
+              "mean": 0.334
+            },
+            {
+              "mean": 0.333
+            }
+          ]
+        },
+        "clear_sky_diffuse_optical_depth": {
+          "display_name": "Clear-sky diffuse pseudo-optical depth (taud)",
+          "units": "-",
+          "source_data_period": "Handbook 2025 solar period of record",
+          "source_data_type": "MODELED",
+          "monthly": [
+            {
+              "mean": 2.404
+            },
+            {
+              "mean": 2.399
+            },
+            {
+              "mean": 2.321
+            },
+            {
+              "mean": 2.307
+            },
+            {
+              "mean": 2.314
+            },
+            {
+              "mean": 2.336
+            },
+            {
+              "mean": 2.366
+            },
+            {
+              "mean": 2.4
+            },
+            {
+              "mean": 2.421
+            },
+            {
+              "mean": 2.468
+            },
+            {
+              "mean": 2.47
+            },
+            {
+              "mean": 2.443
+            }
+          ]
+        },
+        "daily_all_sky_solar_irradiation": {
+          "display_name": "Daily all-sky global horizontal solar irradiation",
+          "units": "J/m2",
+          "source_data_period": "Handbook 2025 solar period of record",
+          "source_data_type": "MODELED",
+          "annual": {
+            "mean": 8793000
+          },
+          "monthly": [
+            {
+              "mean": 1620000,
+              "standard_deviation": 252000
+            },
+            {
+              "mean": 3816000,
+              "standard_deviation": 468000
+            },
+            {
+              "mean": 7776000,
+              "standard_deviation": 648000
+            },
+            {
+              "mean": 13392000,
+              "standard_deviation": 1188000
+            },
+            {
+              "mean": 16740000,
+              "standard_deviation": 1332000
+            },
+            {
+              "mean": 16992000,
+              "standard_deviation": 1872000
+            },
+            {
+              "mean": 15912000,
+              "standard_deviation": 1512000
+            },
+            {
+              "mean": 12528000,
+              "standard_deviation": 1080000
+            },
+            {
+              "mean": 8712000,
+              "standard_deviation": 720000
+            },
+            {
+              "mean": 4716000,
+              "standard_deviation": 576000
+            },
+            {
+              "mean": 2160000,
+              "standard_deviation": 252000
+            },
+            {
+              "mean": 1152000,
+              "standard_deviation": 144000
+            }
+          ]
+        },
+        "daily_dry_bulb_temperature_range": {
+          "display_name": "Mean daily dry-bulb temperature range",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {
+              "mean": 4.5
+            },
+            {
+              "mean": 5.3
+            },
+            {
+              "mean": 6.4
+            },
+            {
+              "mean": 8.0
+            },
+            {
+              "mean": 8.2
+            },
+            {
+              "mean": 8.1
+            },
+            {
+              "mean": 7.7
+            },
+            {
+              "mean": 7.4
+            },
+            {
+              "mean": 6.8
+            },
+            {
+              "mean": 6.0
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 4.8
+            }
+          ]
+        },
+        "daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature": {
+          "display_name": "Mean daily dry-bulb temperature range at the 5% design dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 5.3
+            },
+            {
+              "mean": 7.6
+            },
+            {
+              "mean": 10.9
+            },
+            {
+              "mean": 11.8
+            },
+            {
+              "mean": 11.5
+            },
+            {
+              "mean": 10.7
+            },
+            {
+              "mean": 9.4
+            },
+            {
+              "mean": 8.2
+            },
+            {
+              "mean": 6.4
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 5.2
+            }
+          ]
+        },
+        "daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature": {
+          "display_name": "Mean daily wet-bulb temperature range at the 5% design dry-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 4.5
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 6.6
+            },
+            {
+              "mean": 6.9
+            },
+            {
+              "mean": 6.7
+            },
+            {
+              "mean": 5.9
+            },
+            {
+              "mean": 5.6
+            },
+            {
+              "mean": 5.1
+            },
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 4.8
+            },
+            {
+              "mean": 5.1
+            }
+          ]
+        },
+        "daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature": {
+          "display_name": "Mean daily dry-bulb temperature range at the 5% design wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.9
+            },
+            {
+              "mean": 6.8
+            },
+            {
+              "mean": 9.3
+            },
+            {
+              "mean": 10.3
+            },
+            {
+              "mean": 10.3
+            },
+            {
+              "mean": 9.6
+            },
+            {
+              "mean": 8.3
+            },
+            {
+              "mean": 6.9
+            },
+            {
+              "mean": 5.5
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 5.2
+            }
+          ]
+        },
+        "daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature": {
+          "display_name": "Mean daily wet-bulb temperature range at the 5% design wet-bulb temperature",
+          "units": "K",
+          "source_data_period": "Handbook 2025 period of record",
+          "source_data_type": "MEASURED",
+          "monthly": [
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.6
+            },
+            {
+              "mean": 5.2
+            },
+            {
+              "mean": 6.1
+            },
+            {
+              "mean": 6.5
+            },
+            {
+              "mean": 6.3
+            },
+            {
+              "mean": 5.7
+            },
+            {
+              "mean": 5.5
+            },
+            {
+              "mean": 5.0
+            },
+            {
+              "mean": 4.8
+            },
+            {
+              "mean": 5.1
+            },
+            {
+              "mean": 5.2
+            }
+          ]
+        },
+        "coldest_month": 1,
+        "hottest_month": 7
+      }
+    }
+  ],
+  "time_series_data_sets": [
+    {
+      "source_data_period": {
+        "id": "Hourly Typical Year - climate.onebuilding.org",
+        "start_time": "1991-01-01",
+        "end_time": "2020-12-31",
+        "notes": "Placeholder for an hourly typical-year time series (values omitted in this example)."
+      },
+      "dry_bulb_temperature": {
+        "display_name": "Dry-bulb temperature",
+        "units": "K",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
+        "values": []
+      },
+      "relative_humidity": {
+        "display_name": "Relative humidity",
+        "units": "-",
+        "value_type": "INSTANTANEOUS",
+        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
+        "values": []
+      }
+    }
+  ]
+}

@@ -2,6 +2,23 @@
 
 An open source data model specification for climate information developed through a stakeholder consensus process by the IBPSA-USA Building Data Exchange Committee. An example JSON file is included with this document (example-20211111.json). Access the first version of the document here: https://ibpsa-usa.github.io/climate-information/
 
+Access the document here: https://ibpsa-usa.github.io/climate-information/
+
+Contributing
+------------
+
+Markdown files in this repo are kept **ASCII-only** for consistency with the schema's
+unit strings (`W/m2`, `J/kg`, `^` for exponents) and to stay greppable. A checker
+enforces this:
+
+```bash
+python3 tools/check_ascii_md.py        # check every tracked *.md
+git config core.hooksPath .githooks    # one-time: enable the pre-commit hook
+```
+
+With the hook enabled, a commit that adds a non-ASCII character to a `.md` file is
+blocked locally; CI runs the same check on every push (`.github/workflows/ascii-check.yaml`).
+
 The second version of this document is intended to be an informative addendum to ASHRAE Standard 169. It will provide expanded and updated data model specifications for climate data, based on the data model initially was developed through a stakeholder consensus process by the IBPSA-USA Building Data Exchange Committee. It is based on the standard framework and vocabulary provided in ASHRAE Standard 205-2023. 
 
 Notes on this version of the data model and its expected evolution:
