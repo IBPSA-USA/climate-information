@@ -10,16 +10,17 @@ ASHRAE quantities as *missing* from the YAML; almost all of those were added in 
 2026-06-12 schema update, so **the YAML and the curated JSON example now describe the
 same set of summary variables** (verified programmatically -- see Part 1.3). The
 *structural* YAML<->JSON inconsistencies that earlier drafts tracked have been resolved and
-the curated examples now match the YAML shapes; the one remaining caveat is a tooling
-dependency -- the current `lattice` build cannot parse the `ashrae_grade` constraint
-(`'["A", "B", "C", "D", "E"]'`), so JSON-Schema generation/validation of the examples is
-unavailable until `lattice` is updated. The EPW converter has been validated field-by-field
-against the EnergyPlus data dictionary (Part 2).
+the curated examples now match the YAML shapes; JSON-Schema generation and example
+validation both run clean against the `lattice` build pinned in `pyproject.toml`, which
+parses the `ashrae_grade` constraint (`'["A", "B", "C", "D", "E"]'`) that an earlier build
+could not. The EPW converter has been validated field-by-field against the EnergyPlus data
+dictionary (Part 2).
 
-> Companion: `docs/implementation_and_application_notes.md` explains the data model,
-> the unit conventions, and the full list of deliberate exclusions (its "Exclusions"
-> section). Open questions are tracked in `docs/open_questions_before_publishing.md`.
-> This document is the column-level cross-check.
+> Companions: the `ClimateInformation` specification explains the data model, the unit
+> conventions, and the deliberate exclusions.
+> `extra_docs/ashrae_to_ddy_and_model_mapping.md` and
+> `extra_docs/epw_to_model_mapping.md` are the section-level maps for the two formats.
+> This document is the column-level cross-check behind them.
 
 ---
 
@@ -83,7 +84,7 @@ authoritative column-range cross-check (the schema variable names are the
 ### 1.3 YAML <-> JSON variable parity
 
 Comparing the YAML `ClimateSummaryData` data elements against the curated
-`examples/USA_IL_Chicago-v2.1-draft.json` `summary_data`:
+`examples/curated/USA_IL_Chicago-v2.1-draft.json` `summary_data`:
 
 - **In JSON but not YAML:** *(none)*.
 - **In YAML but not JSON:** `relative_humidity` only -- defined as a summary variable but
@@ -101,7 +102,7 @@ So the two are aligned: the schema defines exactly the variables the example use
 > `tools/epw_to_json.py`) was cross-checked field-by-field against the EnergyPlus EPW
 > data dictionary
 > ([bigladdersoftware EPW data dictionary](https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html);
-> a local copy is kept at `docs/epw_data_dictionary.md`).
+> a local copy is kept at `extra_docs/epw_data_dictionary.md`).
 > All 21 mapped hourly fields agree with the dictionary on **position, unit, and
 > missing-value sentinel** (section 2.3); the 9 unmapped fields are exactly the ones with no
 > schema home (section 2.3 / section 8.1) and are re-emitted with their correct sentinels. A generated
@@ -189,8 +190,7 @@ temperature, 999 for %/direction/speed, 9999 for Wh/m2, 999999 for pressure/illu
 etc.). The v2.1 schema supports an explicit `null`, so on import (`epw_to_json.py`) each
 sentinel becomes `null` and on export (`json_to_epw.py`) each `null` returns to the
 sentinel. This is exercised by
-`tools/test_climate_helpers.py::test_null_roundtrip_epw_json` (and is the round-trip
-illustrated by `extra_examples/test_20251017.json`).
+`tools/test_climate_helpers.py::test_null_roundtrip_epw_json`.
 
 > One sentinel edge case: the data dictionary flags the three illuminance fields
 > (global/direct/diffuse) as missing when a value is `>= 999900`, but the converter tests

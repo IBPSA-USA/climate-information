@@ -17,4 +17,4 @@ build-backend = "hatchling.build"
 packages = ["climate-information"]
 
 [tool.uv.sources]
-lattice = { git = "https://github.com/bigladder/lattice.git", branch = "constraint-data-type-restrictions" }
+lattice = { git = "https://github.com/bigladder/lattice.git", branch = "nested-attribute-constraints" }

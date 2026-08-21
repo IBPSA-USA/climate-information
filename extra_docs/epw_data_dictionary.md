@@ -7,7 +7,7 @@
 > Kept in-repo so the EPW <-> Climate Information converters (`tools/epw_to_json.py`,
 > `tools/json_to_epw.py`) can be validated against a stable snapshot of the format. The
 > field-by-field mapping onto the schema -- and which fields the converter carries -- is in
-> `docs/ashrae_dd_gap_analysis.md` (Part 2). Numeric *missing* / *min* / *max* values below
+> `extra_docs/ashrae_dd_gap_analysis.md` (Part 2). Numeric *missing* / *min* / *max* values below
 > are reproduced exactly as published.
 >
 > **License:** Documentation copyright (c) 1996-2015 The Board of Trustees of the University

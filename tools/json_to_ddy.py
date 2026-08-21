@@ -12,8 +12,11 @@ What is reconstructed:
 
 The generated DDY is round-trip-faithful with ``ddy_to_json.py`` for every design value
 the model carries (including the enthalpy magnitude, which is written into the design
-day's ``Enthalpy at Maximum Dry-Bulb`` field). Monthly design days are not emitted (the
-JSON design summary is annual).
+day's ``Enthalpy at Maximum Dry-Bulb`` field). Each summer day also carries the daily
+dry-/wet-bulb ranges and the clear-sky optical depths for its month, so the generated
+design days have a real diurnal swing and a real solar model rather than an isothermal
+day with no sun. Monthly design days are not emitted (the JSON design summary is
+annual).
 
 Usage::
 
@@ -34,7 +37,12 @@ load_dotenv()
 REPO_ROOT = os.environ.get("REPO_ROOT") or str(Path(__file__).resolve().parents[1])
 sys.path.insert(0, REPO_ROOT)
 
-from tools.climate_common import summary_data_to_ashrae_cols
+from tools.climate_common import (
+    DESIGN_DAY_RANGE_VARS,
+    OPTICAL_DEPTH_VARS,
+    monthly_summary_data_to_values,
+    summary_data_to_ashrae_cols,
+)
 
 _MONTH_NAMES = [
     "JAN",
@@ -92,7 +100,12 @@ def _g(value) -> str:
     return f"{value:g}"
 
 
-def _design_day_block(
+def _g1(value) -> str:
+    """A temperature range: always one decimal, the way real DDYs write them."""
+    return "" if value is None else f"{float(value):.1f}"
+
+
+def _design_day_block(  # noqa: PLR0913
     name,
     day_type,
     maxdb,
@@ -103,7 +116,20 @@ def _design_day_block(
     pressure,
     wind_speed,
     wind_dir,
+    db_range,
+    wb_range,
+    taub,
+    taud,
 ) -> str:
+    """One SizingPeriod:DesignDay object.
+
+    The solar tail follows the design day's own model, matching what real DDYs do. A
+    summer day uses ASHRAETau2017 with the month's clear-sky optical depths and has no
+    Clearness field at all; a winter day uses ASHRAEClearSky with Clearness 0.00 and no
+    optical depths, because heating design ignores solar gain. A summer day falls back to
+    the winter form only if the document carries no optical depths for its month.
+    """
+    use_tau = taub is not None and taud is not None
     lines = [
         " SizingPeriod:DesignDay,",
         f"  {name},     !- Name",
@@ -111,7 +137,7 @@ def _design_day_block(
         "  21,      !- Day of Month",
         f"  {day_type},!- Day Type",
         f"  {_g(maxdb)},      !- Maximum Dry-Bulb Temperature {{C}}",
-        "  0.0,      !- Daily Dry-Bulb Temperature Range {C}",
+        f"  {_g1(db_range) or '0.0'},      !- Daily Dry-Bulb Temperature Range {{C}}",
         " DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type",
         "           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name",
         f"  {hum_type},      !- Humidity Condition Type",
@@ -119,20 +145,31 @@ def _design_day_block(
         "           ,      !- Humidity Indicating Day Schedule Name",
         "           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}",
         f"  {_g(enth_jkg)},      !- Enthalpy at Maximum Dry-Bulb {{J/kg}}",
-        "           ,      !- Daily Wet-Bulb Temperature Range {deltaC}",
+        f"  {_g1(wb_range)},      !- Daily Wet-Bulb Temperature Range {{deltaC}}",
         f"  {_g(pressure)}.,      !- Barometric Pressure {{Pa}}",
         f"  {_g(wind_speed)},      !- Wind Speed {{m/s}}",
         f"  {_g(wind_dir)},      !- Wind Direction {{Degrees; N=0, S=180}}",
         "         No,      !- Rain {Yes/No}",
         "         No,      !- Snow on ground {Yes/No}",
         "         No,      !- Daylight Savings Time Indicator",
-        "  ASHRAEClearSky, !- Solar Model Indicator",
-        "           ,      !- Beam Solar Day Schedule Name",
-        "           ,      !- Diffuse Solar Day Schedule Name",
-        "           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)",
-        "           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)",
-        "       0.00;      !- Clearness {0.0 to 1.1}",
     ]
+    if use_tau:
+        lines += [
+            "  ASHRAETau2017, !- Solar Model Indicator",
+            "           ,      !- Beam Solar Day Schedule Name",
+            "           ,      !- Diffuse Solar Day Schedule Name",
+            f"  {_g(taub)},      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)",
+            f"  {_g(taud)};      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)",
+        ]
+    else:
+        lines += [
+            "  ASHRAEClearSky, !- Solar Model Indicator",
+            "           ,      !- Beam Solar Day Schedule Name",
+            "           ,      !- Diffuse Solar Day Schedule Name",
+            "           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)",
+            "           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)",
+            "       0.00;      !- Clearness {0.0 to 1.1}",
+        ]
     return "\n".join(lines)
 
 
@@ -142,6 +179,8 @@ def climate_information_to_ddy(doc: dict) -> str:
     if doc.get("summary_data_sets"):
         summary = doc["summary_data_sets"][0].get("summary_data", {})
     cols = summary_data_to_ashrae_cols(summary)
+    # Monthly daily-ranges and clear-sky optical depths, read at each design day's month.
+    monthly = monthly_summary_data_to_values(summary)
 
     full_name = location.get("name", "Station")
     pre = full_name.split(",")[0].strip()
@@ -215,6 +254,18 @@ def climate_information_to_ddy(doc: dict) -> str:
         # column is absent, so the field is never blank.
         day_ws = cols.get(ws_col) if cols.get(ws_col) is not None else wind_speed
         day_wd = cols.get(wd_col) if cols.get(wd_col) is not None else wind_dir
+        # Which daily ranges this day reports depends on the design variable it is built
+        # around; the winter days report none (see DESIGN_DAY_RANGE_VARS).
+        db_var, wb_var = DESIGN_DAY_RANGE_VARS.get(suffix.rsplit(None, 1)[-1], (None, None))
+        db_range = monthly.get(db_var, {}).get(int(month)) if db_var else None
+        wb_range = monthly.get(wb_var, {}).get(int(month)) if wb_var else None
+        # Optical depths go on the summer days only: heating design ignores solar gain,
+        # so the winter days keep the ASHRAEClearSky / Clearness 0.00 form.
+        taub = taud = None
+        if day_type == "SummerDesignDay":
+            beam_var, diffuse_var = OPTICAL_DEPTH_VARS
+            taub = monthly.get(beam_var, {}).get(int(month))
+            taud = monthly.get(diffuse_var, {}).get(int(month))
         out.append(
             _design_day_block(
                 name=f"{pre} {suffix}",
@@ -227,6 +278,10 @@ def climate_information_to_ddy(doc: dict) -> str:
                 pressure=pressure,
                 wind_speed=day_ws,
                 wind_dir=day_wd,
+                db_range=db_range,
+                wb_range=wb_range,
+                taub=taub,
+                taud=taud,
             )
         )
         out.append("")

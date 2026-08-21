@@ -12,6 +12,7 @@
  ! Glasgow Bishopton Extreme Annual Wind Speeds, 1%=10.6m/s, 2.5%=9.3m/s, 5%=8.3m/s
  ! Glasgow Bishopton Extreme Annual Temperatures, Max Drybulb=26.9C Min Drybulb=-6.1C
  ! Glasgow Bishopton Extreme Annual Temperatures, Max Wetbulb=20.1C Min Wetbulb=-6.5C
+ ! Glasgow Bishopton ASHRAE Climate Zone=5A
  ! Glasgow Bishopton Annual Heating Design Conditions Wind Speed=1.5m/s Wind Dir=330
  ! Glasgow Bishopton Annual Cooling Design Conditions Wind Speed=3.5m/s Wind Dir=100
  ! Coldest Month=JAN
@@ -31,7 +32,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   1.5,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -59,7 +60,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   1.5,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -87,7 +88,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   1.5,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -115,7 +116,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   1.5,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -143,7 +144,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   14.1,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -171,7 +172,7 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   12.7,      !- Wind Speed {m/s}
   330,      !- Wind Direction {Degrees; N=0, S=180}
@@ -191,7 +192,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   23.2,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  10.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -199,19 +200,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.9,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 1% Condns DB=>MWB,     !- Name
@@ -219,7 +219,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   21.3,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  10.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -227,19 +227,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.9,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 2% Condns DB=>MWB,     !- Name
@@ -247,7 +246,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   19.7,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  10.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -255,19 +254,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.9,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg .4% Condns WB=>MDB,     !- Name
@@ -275,7 +273,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   21.8,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  9.6,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -283,19 +281,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.7,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 1% Condns WB=>MDB,     !- Name
@@ -303,7 +300,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   20.1,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  9.6,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -311,19 +308,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.7,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 2% Condns WB=>MDB,     !- Name
@@ -331,7 +327,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   18.8,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  9.6,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Wetbulb,      !- Humidity Condition Type
@@ -339,19 +335,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  5.7,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg .4% Condns DP=>MDB,     !- Name
@@ -359,7 +354,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   19.5,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Dewpoint,      !- Humidity Condition Type
@@ -367,19 +362,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 1% Condns DP=>MDB,     !- Name
@@ -387,7 +381,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   18.4,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Dewpoint,      !- Humidity Condition Type
@@ -395,19 +389,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 2% Condns DP=>MDB,     !- Name
@@ -415,7 +408,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   17.4,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Dewpoint,      !- Humidity Condition Type
@@ -423,19 +416,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg .4% Condns Enth=>MDB,     !- Name
@@ -443,7 +435,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   21.9,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Enthalpy,      !- Humidity Condition Type
@@ -451,19 +443,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   51400,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 1% Condns Enth=>MDB,     !- Name
@@ -471,7 +462,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   20.2,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Enthalpy,      !- Humidity Condition Type
@@ -479,19 +470,18 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   48300,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
  SizingPeriod:DesignDay,
   Glasgow Bishopton Ann Clg 2% Condns Enth=>MDB,     !- Name
@@ -499,7 +489,7 @@
   21,      !- Day of Month
   SummerDesignDay,!- Day Type
   18.8,      !- Maximum Dry-Bulb Temperature {C}
-  0.0,      !- Daily Dry-Bulb Temperature Range {C}
+  7.7,      !- Daily Dry-Bulb Temperature Range {C}
  DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
            ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
   Enthalpy,      !- Humidity Condition Type
@@ -507,17 +497,16 @@
            ,      !- Humidity Indicating Day Schedule Name
            ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
   45600,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+  ,      !- Daily Wet-Bulb Temperature Range {deltaC}
   100618.,      !- Barometric Pressure {Pa}
   3.5,      !- Wind Speed {m/s}
   100,      !- Wind Direction {Degrees; N=0, S=180}
          No,      !- Rain {Yes/No}
          No,      !- Snow on ground {Yes/No}
          No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
+  ASHRAETau2017, !- Solar Model Indicator
            ,      !- Beam Solar Day Schedule Name
            ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  0.386,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+  2.366;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 

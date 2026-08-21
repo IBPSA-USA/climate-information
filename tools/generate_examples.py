@@ -70,11 +70,16 @@ def generate() -> list[Path]:
             )
             convert_ddy(ddy, ddy_json, location_overrides=overrides)
 
-            # Reverse: the (richer) EPW-derived JSON -> EPW and DDY
+            # Reverse: each format is written from the JSON that actually feeds it. The
+            # EPW-derived JSON is the richer one overall -- it alone carries the hourly
+            # series -- but for a DDY it is the poorer source: an EPW header holds ASHRAE
+            # columns P-CL only, so it has none of the monthly daily ranges or clear-sky
+            # optical depths the design days need. Writing the DDY from the DDY-derived
+            # JSON keeps those, and makes this a true DDY -> JSON -> DDY round-trip.
             epw_back = OUT_DIR / f"{base}-from-json.epw"
             ddy_back = OUT_DIR / f"{base}-from-json.ddy"
             convert_json_to_epw(epw_json, epw_back)
-            convert_json_to_ddy(epw_json, ddy_back)
+            convert_json_to_ddy(ddy_json, ddy_back)
 
             written += [epw_json, ddy_json, epw_back, ddy_back]
             for p in (epw_json, ddy_json, epw_back, ddy_back):

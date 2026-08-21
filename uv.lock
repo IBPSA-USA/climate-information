@@ -294,7 +294,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "lattice", git = "https://github.com/bigladder/lattice.git?branch=constraint-data-type-restrictions" },
+    { name = "lattice", git = "https://github.com/bigladder/lattice.git?branch=nested-attribute-constraints" },
     { name = "python-dotenv" },
 ]
 
@@ -419,7 +419,7 @@ wheels = [
 [[package]]
 name = "lattice"
 version = "0.0.0"
-source = { git = "https://github.com/bigladder/lattice.git?branch=constraint-data-type-restrictions#29b6c784cdaf82c581da301d694b76dbdd0a8205" }
+source = { git = "https://github.com/bigladder/lattice.git?branch=nested-attribute-constraints#5571b8a209ed34f2eac89ebf5123966a5a342fe6" }
 dependencies = [
     { name = "atheneum-forge" },
     { name = "casefy" },

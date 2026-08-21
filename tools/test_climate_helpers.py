@@ -1,6 +1,6 @@
 """Tests for the EPW/DDY -> Climate Information v2.1 converters.
 
-Two tests, both self-contained (only local paths in this repo are used):
+All self-contained -- only local paths in this repo are used. The two headline checks:
 
 1. ``test_ddy_matches_ashrae`` -- the design conditions parsed out of each DDY file
    are identical to the matching row of the ASHRAE HOF 2025 spreadsheet. The
@@ -12,7 +12,10 @@ Two tests, both self-contained (only local paths in this repo are used):
    numeric sentinels like 99.9, 999, 9999); the v2.1 schema supports explicit
    ``null``. This checks that a sentinel becomes ``null`` on the way into JSON and the
    same sentinel comes back on the way out, and that ``null`` survives a JSON
-   serialisation round-trip (the case illustrated by ``extra_examples/test_20251017.json``).
+   serialisation round-trip.
+
+The rest cover the reverse converters, the opt-in EPW design header, and the design-day
+daily ranges and solar model in both directions.
 
 Run directly (``python tools/test_climate_helpers.py``) or with pytest.
 """
@@ -32,10 +35,13 @@ load_dotenv()
 REPO_ROOT = os.environ.get("REPO_ROOT") or str(Path(__file__).resolve().parents[1])
 sys.path.insert(0, REPO_ROOT)
 
+from tools.climate_common import DESIGN_DAY_RANGE_VARS, OPTICAL_DEPTH_VARS
 from tools.ddy_to_json import (
     ddy_design_columns,
+    ddy_monthly_values,
     ddy_to_climate_information,
     extract_member,
+    parse_idf_objects,
     parse_site_location,
 )
 from tools.epw_to_json import EPW_FIELDS, epw_field_to_json, epw_to_climate_information
@@ -278,6 +284,153 @@ def test_epw_header_design_default_off():
             "epw_header_design=True should populate summary_data_sets"
         )
     print("test_epw_header_design_default_off OK (default excludes EPW-header design)")
+
+
+# --------------------------------------------------------------------------- #
+# Test 5: design-day daily ranges and solar model, in both directions
+# --------------------------------------------------------------------------- #
+
+# SizingPeriod:DesignDay fields compared below, by field index.
+_DAY_FIELDS = (
+    (2, "month"),
+    (6, "daily dry-bulb range"),
+    (14, "daily wet-bulb range"),
+    (21, "solar model"),
+    (24, "taub"),
+    (25, "taud"),
+    (26, "clearness"),
+)
+
+# 18 annual design days: 6 heating (winter) and 12 cooling (summer).
+EXPECTED_COOLING_DAYS = 12
+
+
+def _annual_design_days(text: str) -> dict:
+    """``{day name suffix: {field label: raw value}}`` for the annual design days."""
+    days = {}
+    for obj in parse_idf_objects(text):
+        if obj[0].strip() != "SizingPeriod:DesignDay":
+            continue
+        name = obj[1].strip()
+        if "Ann " not in name:
+            continue  # monthly design days: out of scope for both converters
+        days[name.split("Ann ", 1)[1]] = {
+            label: (obj[i].strip() if len(obj) > i else "") for i, label in _DAY_FIELDS
+        }
+    return days
+
+
+def test_ddy_design_day_fields_roundtrip():
+    """DDY -> JSON -> DDY reproduces every annual design day's range and solar fields.
+
+    These are the fields the converters used to drop. The writer emitted every day with a
+    0.0 dry-bulb range, a blank wet-bulb range and an ASHRAEClearSky / Clearness 0.00
+    stub -- in EnergyPlus, an isothermal design day with no sun. The reader did not pick
+    them up either, so the loss was symmetric and a summary-only round-trip could not see
+    it; hence the explicit assertions on the values below.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        for station, zip_path in STATIONS.items():
+            ddy = extract_member(zip_path, ".ddy", tmp)
+            source = ddy.read_text(encoding="utf-8", errors="replace")
+            regenerated = climate_information_to_ddy(ddy_to_climate_information(ddy))
+
+            before = _annual_design_days(source)
+            after = _annual_design_days(regenerated)
+            assert set(before) == set(after), (
+                f"[{station}] annual design days changed: "
+                f"{sorted(set(before) ^ set(after))}"
+            )
+            mismatches = [
+                f"{day} {label}: source={before[day][label]!r} "
+                f"regenerated={after[day][label]!r}"
+                for day in sorted(before)
+                for _index, label in _DAY_FIELDS
+                if before[day][label] != after[day][label]
+            ]
+            assert not mismatches, (
+                f"[{station}] DDY round-trip changed design-day fields:\n  "
+                + "\n  ".join(mismatches)
+            )
+
+            # Assert the intent, not just the equality: a cooling design day must have a
+            # real diurnal swing and a real solar model, or it under-sizes cooling plant.
+            cooling = sorted(day for day in after if day.startswith("Clg"))
+            assert len(cooling) == EXPECTED_COOLING_DAYS, (
+                f"[{station}] expected {EXPECTED_COOLING_DAYS} cooling days, "
+                f"got {len(cooling)}"
+            )
+            for day in cooling:
+                fields = after[day]
+                assert float(fields["daily dry-bulb range"]) > 0.0, (
+                    f"[{station}] {day} has no diurnal swing"
+                )
+                assert fields["solar model"] == "ASHRAETau2017", (
+                    f"[{station}] {day} solar model is {fields['solar model']!r}"
+                )
+                assert float(fields["taub"]) > 0.0 and float(fields["taud"]) > 0.0, (
+                    f"[{station}] {day} carries no clear-sky optical depths"
+                )
+            print(
+                f"  [{station}] {len(before)} annual design days identical across "
+                f"DDY->JSON->DDY"
+            )
+
+    print("test_ddy_design_day_fields_roundtrip OK (ranges + solar model preserved)")
+
+
+def test_ddy_monthly_values_read():
+    """The reader recovers the daily ranges and optical depths a DDY states.
+
+    Cross-checked against the design-day fields parsed straight out of the file rather
+    than against the round-trip, so this fails if the reader starts dropping them again.
+    The round-trip test cannot catch that on its own: a loss shared by both directions
+    round-trips perfectly, which is exactly how this went unnoticed.
+    """
+    expected_variables = set(OPTICAL_DEPTH_VARS)
+    for range_variables in DESIGN_DAY_RANGE_VARS.values():
+        expected_variables.update(v for v in range_variables if v)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        for station, zip_path in STATIONS.items():
+            ddy = extract_member(zip_path, ".ddy", tmp)
+            text = ddy.read_text(encoding="utf-8", errors="replace")
+            days = _annual_design_days(text)
+            monthly = ddy_monthly_values(text)
+
+            missing = expected_variables - set(monthly)
+            assert not missing, f"[{station}] reader found nothing for: {sorted(missing)}"
+
+            checked = 0
+            for day, fields in sorted(days.items()):
+                month = int(float(fields["month"]))
+                suffix = day.rsplit(None, 1)[-1]
+                pairs = list(
+                    zip(
+                        DESIGN_DAY_RANGE_VARS.get(suffix, (None, None)),
+                        ("daily dry-bulb range", "daily wet-bulb range"),
+                    )
+                ) + list(zip(OPTICAL_DEPTH_VARS, ("taub", "taud")))
+                for variable, label in pairs:
+                    raw = fields[label]
+                    if not variable or not raw:
+                        continue
+                    got = monthly.get(variable, {}).get(month)
+                    assert got is not None, (
+                        f"[{station}] {day}: {variable} missing for month {month} "
+                        f"(DDY says {raw})"
+                    )
+                    assert abs(float(got) - float(raw)) <= TOL, (
+                        f"[{station}] {day}: {variable}[{month}] = {got} "
+                        f"but DDY says {raw}"
+                    )
+                    checked += 1
+            # Each of the 12 cooling days states a dry-bulb range and both optical
+            # depths, so a healthy read is comfortably above this floor.
+            assert checked >= 30, f"[{station}] only {checked} values cross-checked"
+            print(f"  [{station}] {checked} design-day values match the reader's output")
+
+    print("test_ddy_monthly_values_read OK (ranges + optical depths recovered)")
 
 
 # --------------------------------------------------------------------------- #

@@ -1,6 +1,8 @@
 title: "Climate Information Data Model"
 author: "IBPSA-USA"
 description: "A standardized modern data model for characterizing climate data"
+specifications:
+  - "ClimateInformation"
 colors:
   primary: grey
   accent: red

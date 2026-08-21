@@ -8,6 +8,13 @@ Schema:
     ClimateUnits:
       - h
       - degrees
+      - ""
+      - "%"
+      - K-day
+      - ppm
+      - ppb
+      - radians
+      - ug/m3
 
 SchemaType:
   Object Type: "Enumeration"
@@ -323,8 +330,6 @@ TimeInterval:
       Type: "Array(String)"
       Constraints: "[1..]"
 
-# TODO: Constraints the way they are written now may be redundant.
-# TODO: Add all the summary statistics variables from the ashrae design weather data set.
 ClimateSummaryData:
   Object Type: "Data Group"
   Data Elements:
@@ -333,50 +338,117 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature"
       - units="K"
-      # - values.Constraints=">0"
-      # For all numerical values below, this constraint must apply. What is the syntax for such an instruction?
-      # Enumerating every instance/statistics is potentially redundant and too verbose, since the same could be achieved by taking a "join" of the constraints on the individual statistical elements. E.g., all statistics for dry-bulb temperature should have the unit "K" and values ">0", *unless* otherwise defined for a specific statistic, e.g., return period or variance.
-      # - annual.mean.Constraints=">0"
-      # - annual.mean.Units="K"
-      # - monthly.mean.Constraints=">0"
-      # - monthly.mean.Units="K"
-      # - annual.standard_deviation.Constraints=">=0"
-      # - annual.standard_deviation.Units="K"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Dry-bulb temperature
     dew_point_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Dew-point temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Dew-point temperature
     relative_humidity:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Relative humidity"
       - units="-"
-      # - values.Constraints=">=0, <=1"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '-'
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: '-'
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>=0, <=1'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Relative humidity
     dry_bulb_temperature_coincident_mean_wet_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Dry-bulb temperature coincident with mean wet-bulb temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      # NOTE: base/index variable (values) is dry-bulb temperature (K); the coincident
+      # variable (coincident_values) is wet-bulb temperature (K). Inferred from this
+      # element's own name/description — please review.
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Dry-bulb temperature coincident with mean wet-bulb temperature
     dry_bulb_temperature_coincident_mean_wind_speed:
       Type: Group(SummaryData)
       Constraints:
       - display_name="MCWS/DB"
-      - units="K"
-      # - values.Constraints=">0"
+      - units="m/s"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      # NOTE: units corrected from K to m/s to match the stored quantity (mean wind speed),
+      # not the dry-bulb temperature it's coincident with. Base/index variable (values) is
+      # dry-bulb temperature (K); the coincident variable (coincident_values) is wind speed
+      # (m/s). Inferred from this element's own name/description — please review.
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: m/s
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: m/s
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean wind speed coincident with given dry-bulb temperature statistic
     daily_average_dry_bulb_temperature:
       Type: Group(SummaryData)
       Constraints:
       - display_name="Daily average dry-bulb temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Daily average dry-bulb temperature
       Notes: This is the sum of the daily minimum and maximum temperatures divided by 2. Generally used to estimate monthly degree days.
     liquid_precipitation_depth:
@@ -384,21 +456,24 @@ ClimateSummaryData:
       Constraints:
       - display_name="Liquid precipitation depth"
       - units="m"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: m
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: m
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Liquid precipitation depth
       Notes: The cumulative depth of precipitation in the past time step.
     heating_degree_days:
       Type: Array(Group(DegreeDays))
-      Constraints:
-      - units="K-day"
-      # - values.Constraints=">=0"
       Description: Heating degree days
       Notes: Array of heating degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is below a base temperature, typically used for estimating heating energy requirements.
     cooling_degree_days:
       Type: Array(Group(DegreeDays))
-      Constraints:
-      - units="K-day"
-      # - values.Constraints=">=0"
       Description: Cooling degree days
       Notes: Array of cooling degree days defined by a base temperature. The cumulative number of degrees that a day's average temperature is above a base temperature, typically used for estimating cooling energy requirements.
     wet_bulb_temperature:
@@ -406,7 +481,18 @@ ClimateSummaryData:
       Constraints:
       - display_name="Wet-bulb temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Wet-bulb temperature
       Notes: "Covers the ASHRAE annual and monthly design wet-bulb conditions (Evaporation WB), the extreme maximum wet-bulb (annual.maximum), and the extreme annual mean/standard deviation of the minimum/maximum wet-bulb."
     wind_speed:
@@ -414,7 +500,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Wind speed"
       - units="m/s"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: m/s
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: m/s
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Wind speed
       Notes: "Wind speed at the anemometer height (typically 10 m). Covers the ASHRAE average annual/monthly wind speed (mean) and the extreme annual wind speed (percent_exceedance at 1/2.5/5%)."
     enthalpy:
@@ -422,7 +517,13 @@ ClimateSummaryData:
       Constraints:
       - display_name="Enthalpy"
       - units="J/kg"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: J/kg
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: J/kg
       Description: Moist-air specific enthalpy
       Notes: "Derivable from dry-bulb temperature, humidity, and station pressure; included for convenience to support the ASHRAE annual enthalpy design conditions (percent_exceedance at 0.4/1/2%)."
     dew_point_temperature_coincident_mean_dry_bulb_temperature:
@@ -430,7 +531,20 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with dew-point temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Mean dry-bulb temperature coincident with a given dew-point temperature statistic
       Notes: "ASHRAE humidification (99.0/99.6%) and dehumidification (0.4/1/2%) MCDB. The percent_time_exceeded grid refers to the percentile of the dew-point temperature."
     wet_bulb_temperature_coincident_mean_dry_bulb_temperature:
@@ -438,7 +552,20 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with wet-bulb temperature"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Mean dry-bulb temperature coincident with a given wet-bulb temperature statistic
       Notes: "ASHRAE evaporation (Evaporation WB/MCDB) and monthly design wet-bulb MCDB. The percent_time_exceeded grid refers to the percentile of the wet-bulb temperature."
     dry_bulb_temperature_coincident_prevailing_wind_direction:
@@ -446,7 +573,21 @@ ClimateSummaryData:
       Constraints:
       - display_name="Prevailing wind direction coincident with dry-bulb temperature"
       - units="radians"
-      # - values.Constraints=">=0, <=6.283185307179586"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      # NOTE: units corrected on the percent_exceedance basis (values) from radians to K to
+      # match the basis/index variable (dry-bulb temperature), per Notes below. The stored
+      # quantity itself (prevailing wind direction, radians) is unchanged. Please review.
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: radians
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: radians
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>=0, <=6.283185307179586'
       Description: Prevailing (most frequent) wind direction coincident with a given dry-bulb temperature statistic
       Notes: "ASHRAE PCWD to the 99.6% (heating) and 0.4% (cooling) design dry-bulb temperatures. Clockwise from north."
     enthalpy_coincident_mean_dry_bulb_temperature:
@@ -454,7 +595,23 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with enthalpy"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      # NOTE: units corrected on the percent_exceedance basis (values) from K to J/kg to match
+      # the basis/index variable (enthalpy), per Notes below. The stored quantity itself
+      # (dry-bulb temperature, K) is unchanged. Please review.
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: J/kg
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Mean dry-bulb temperature coincident with a given enthalpy statistic
       Notes: "ASHRAE enthalpy MCDB at the 0.4/1/2% annual enthalpy design conditions."
     wind_speed_coincident_mean_dry_bulb_temperature:
@@ -462,7 +619,23 @@ ClimateSummaryData:
       Constraints:
       - display_name="Dry-bulb temperature coincident with wind speed"
       - units="K"
-      # - values.Constraints=">0"
+      - (annual|monthly).statistic_type=COINCIDENT_VALUES
+      # NOTE: units corrected on the percent_exceedance basis (values) from K to m/s to match
+      # the basis/index variable (wind speed), per Notes below. The stored quantity itself
+      # (dry-bulb temperature, K) is unchanged. Please review.
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: m/s
+        - path: (annual|monthly).percent_exceedance.lookup_variables.coincident_values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|maximum|minimum)
+          value: '>0'
+        - path: (annual|monthly).(standard_deviation|standard_deviation_minimum|standard_deviation_maximum)
+          value: '>=0'
       Description: Mean dry-bulb temperature coincident with a given wind-speed statistic
       Notes: "ASHRAE coldest-month wind speed MCDB at the 0.4/1% design wind speeds."
     clear_sky_beam_optical_depth:
@@ -470,7 +643,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Clear-sky beam (pseudo-)optical depth"
       - units="-"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '-'
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: '-'
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Clear-sky beam pseudo-optical depth (taub)
       Notes: "Monthly ASHRAE clear-sky beam optical depth (taub) for the 21st day of each month, used with the ASHRAE clear-sky solar model (Chapter 14). The clear-sky noon beam/diffuse irradiances derived from taub/taud are intentionally excluded (derivable)."
     clear_sky_diffuse_optical_depth:
@@ -478,7 +660,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Clear-sky diffuse (pseudo-)optical depth"
       - units="-"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '-'
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: '-'
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Clear-sky diffuse pseudo-optical depth (taud)
       Notes: "Monthly ASHRAE clear-sky diffuse optical depth (taud) for the 21st day of each month."
     daily_all_sky_solar_irradiation:
@@ -486,7 +677,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Daily all-sky global horizontal solar irradiation"
       - units="J/m2"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: J/m2
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: J/m2
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Average daily all-sky global horizontal solar irradiation
       Notes: "ASHRAE all-sky average monthly global horizontal radiation (mean) and its standard deviation, expressed as energy per unit area per day."
     daily_dry_bulb_temperature_range:
@@ -494,7 +694,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range"
       - units="K"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean daily dry-bulb temperature range
       Notes: "ASHRAE mean daily dry-bulb temperature range by month. This is a temperature difference, so its numeric value is identical in kelvin and degrees Celsius. The Hottest Month DB Range equals this variable in the hottest month and is therefore not stored separately."
     daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature:
@@ -502,7 +711,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range at the design dry-bulb temperature"
       - units="K"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
       Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design dry-bulb temperature, by month."
     daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature:
@@ -510,7 +728,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily wet-bulb temperature range at the design dry-bulb temperature"
       - units="K"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design dry-bulb temperature
       Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design dry-bulb temperature, by month."
     daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature:
@@ -518,7 +745,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily dry-bulb temperature range at the design wet-bulb temperature"
       - units="K"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean daily dry-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
       Notes: "ASHRAE mean daily dry-bulb range coincident with the 5% design wet-bulb temperature, by month."
     daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature:
@@ -526,7 +762,16 @@ ClimateSummaryData:
       Constraints:
       - display_name="Mean daily wet-bulb temperature range at the design wet-bulb temperature"
       - units="K"
-      # - values.Constraints=">=0"
+      - (annual|monthly).statistic_type=SINGLE_VALUE
+      Nested Attribute Overrides:
+        Units:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: K
+        - path: (annual|monthly).percent_exceedance.lookup_variables.values
+          value: K
+        Constraints:
+        - path: (annual|monthly).(mean|mean_minimum|mean_maximum|standard_deviation|standard_deviation_minimum|standard_deviation_maximum|maximum|minimum)
+          value: '>=0'
       Description: Mean daily wet-bulb temperature range coincident with the 5% monthly design wet-bulb temperature
       Notes: "ASHRAE mean daily wet-bulb range coincident with the 5% design wet-bulb temperature, by month."
     coldest_month:
@@ -549,14 +794,26 @@ ClimateTimeSeries:
       - display_name="Dry-bulb temperature"
       - units="K"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: K
+        Constraints:
+          path: values
+          value: '>0'
       Description: Dry-bulb temperature
     dew_point_temperature:
       Constraints:
       - display_name="Dew-point temperature"
       - units="K"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: K
+        Constraints:
+          path: values
+          value: '>0'
       Type: "Group(TimeSeries)"
       Description: Dew-point temperature
     relative_humidity:
@@ -564,7 +821,13 @@ ClimateTimeSeries:
       - display_name="Relative humidity"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0, <=1"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0, <=1'
       Type: "Group(TimeSeries)"
       Description: Relative humidity
     wet_bulb_temperature:
@@ -572,7 +835,13 @@ ClimateTimeSeries:
       - display_name="Wet-bulb temperature"
       - units="K"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: K
+        Constraints:
+          path: values
+          value: '>0'
       Type: "Group(TimeSeries)"
       Description: Wet-bulb temperature
     humidity_ratio:
@@ -580,7 +849,13 @@ ClimateTimeSeries:
       - display_name="Humidity Ratio"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0, <=1"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0, <=1'
       Type: "Group(TimeSeries)"
       Description: Humidity Ratio
     atmospheric_pressure:
@@ -588,7 +863,13 @@ ClimateTimeSeries:
       - display_name="Atmospheric pressure"
       - units="Pa"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: Pa
+        Constraints:
+          path: values
+          value: '>0'
       Type: "Group(TimeSeries)"
       Description: Atmospheric pressure
     global_horizontal_irradiance:
@@ -596,7 +877,13 @@ ClimateTimeSeries:
       - display_name="Global solar horizontal irradiance (Instantaneous, Power)"
       - units="W/m2"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: W/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Global solar horizontal irradiance (Instantaneous, Power)
       Notes: Instantaneous irradiation received on a horizontal detector.
@@ -605,7 +892,13 @@ ClimateTimeSeries:
       - display_name="Direct normal solar irradiance (Instantaneous, Power)"
       - units="W/m2"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: W/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Direct normal solar irradiance (Instantaneous, Power)
     diffuse_horizontal_irradiance:
@@ -613,7 +906,13 @@ ClimateTimeSeries:
       - display_name="Diffuse horizontal irradiance (Instantaneous, Power)"
       - units="W/m2"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: W/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Diffuse horizontal irradiance (Instantaneous, Power)
     global_horizontal_irradiation:
@@ -621,7 +920,13 @@ ClimateTimeSeries:
       - display_name="Global solar horizontal irradiation (Sum, Energy)"
       - units="J/m2"
       - value_type=SUM
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: J/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Global solar horizontal irradiation (Sum, Energy)
       Notes: This quantity is technically insolation, i.e., irradiance from the sun on
@@ -631,7 +936,13 @@ ClimateTimeSeries:
       - display_name="Direct normal solar irradiation (Sum, Energy)"
       - units="J/m2"
       - value_type=SUM
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: J/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Direct normal solar irradiation (Sum, Energy)
     diffuse_horizontal_irradiation:
@@ -639,7 +950,13 @@ ClimateTimeSeries:
       - display_name="Diffuse horizontal irradiation (Sum, Energy)"
       - units="J/m2"
       - value_type=SUM
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: J/m2
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Diffuse horizontal irradiation (Sum, Energy)
     horizontal_infrared_sky_irradiance:
@@ -647,7 +964,13 @@ ClimateTimeSeries:
       - display_name="Horizontal infrared sky irradiance (Instantaneous, Power)"
       - units="W/m2"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: W/m2
+        Constraints:
+          path: values
+          value: '>0'
       Type: "Group(TimeSeries)"
       Description: Horizontal infrared sky irradiance (Instantaneous, Power)
       Notes: Integrated power at each wavelength between 3 um and 100 um at an instant
@@ -660,7 +983,13 @@ ClimateTimeSeries:
       - display_name="Total sky cover"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0, <=1"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0, <=1'
       Type: "Group(TimeSeries)"
       Description: Total sky cover
       Notes: Fraction of sky dome covered by clouds or obscuring phenomena. Usually measured
@@ -670,7 +999,13 @@ ClimateTimeSeries:
       - display_name="Opaque sky cover"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0, <=1"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0, <=1'
       Type: "Group(TimeSeries)"
       Description: Opaque sky cover
       Notes: Fraction of sky dome covered by opaque clouds or obscuring phenomena. Usually
@@ -680,7 +1015,13 @@ ClimateTimeSeries:
       - display_name="Precipitable water"
       - units="m"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: m
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Precipitable water
       Notes: Total amount of water in a column of unit area from the elevation of the
@@ -690,7 +1031,13 @@ ClimateTimeSeries:
       - display_name="Aerosol optical depth"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Aerosol optical depth
       Notes: Extinction coefficient for a collimated beam traveling through the atmosphere,
@@ -702,7 +1049,13 @@ ClimateTimeSeries:
       - display_name="Global horizontal illuminance"
       - units="lx"
       - value_type=AVERAGE
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: lx
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Global horizontal illuminance
     direct_normal_illuminance:
@@ -710,7 +1063,13 @@ ClimateTimeSeries:
       - display_name="Direct normal illuminance"
       - units="lx"
       - value_type=AVERAGE
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: lx
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Direct normal illuminance
     diffuse_horizontal_illuminance:
@@ -718,7 +1077,13 @@ ClimateTimeSeries:
       - display_name="Diffuse horizontal illuminance"
       - units="lx"
       - value_type=AVERAGE
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: lx
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Diffuse horizontal illuminance
     wind_direction:
@@ -726,6 +1091,10 @@ ClimateTimeSeries:
       - display_name="Wind direction"
       - units="radians"
       - value_type=INSTANTANEOUS
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: radians
       Type: "Group(TimeSeries)"
       Description: Wind direction
       Notes: Clockwise from north
@@ -734,6 +1103,10 @@ ClimateTimeSeries:
       - display_name="Wind speed"
       - units="m/s"
       - value_type=INSTANTANEOUS
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: m/s
       Type: "Group(TimeSeries)"
       Description: Wind speed
       Notes: Instantaneous wind speed at the time stamp. Wind speed is measured at 10m
@@ -743,6 +1116,10 @@ ClimateTimeSeries:
       - display_name="Snow depth"
       - units="m"
       - value_type=INSTANTANEOUS
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: m
       Type: "Group(TimeSeries)"
       Description: Snow depth
       Notes: Current observed depth of snow on the ground.
@@ -751,7 +1128,13 @@ ClimateTimeSeries:
       - display_name="Albedo"
       - units="-"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0, <=1"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
+        Constraints:
+          path: values
+          value: '>=0, <=1'
       Type: "Group(TimeSeries)"
       Description: Albedo
     liquid_precipitation_depth:
@@ -759,7 +1142,13 @@ ClimateTimeSeries:
       - display_name="Liquid precipitation depth"
       - units="m"
       - value_type=SUM
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: m
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Liquid precipitation depth
       Notes: The cumulative depth of precipitation in the past time step.
@@ -768,7 +1157,13 @@ ClimateTimeSeries:
       - display_name="Particulate Matter 1.0"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Particulate Matter 1.0
       Notes: "PM1.0: Mass of particles of size less than or equal to 1 um (micrometer)
@@ -778,7 +1173,13 @@ ClimateTimeSeries:
       - display_name="Particulate Matter 2.5"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Particulate Matter 2.5
       Notes: "PM2.5: Mass of particles of size less than or equal to 2.5 um (micrometer)
@@ -788,7 +1189,13 @@ ClimateTimeSeries:
       - display_name="Particulate Matter 4.0"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Particulate Matter 4.0
       Notes: "PM4.0: Mass of particles of size less than or equal to 4.0 um (micrometer)
@@ -798,7 +1205,13 @@ ClimateTimeSeries:
       - display_name="Particulate Matter 5.0"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Particulate Matter 5.0
       Notes: "PM5.0: Mass of particles of size less than or equal to 5.0 um (micrometer)
@@ -808,7 +1221,13 @@ ClimateTimeSeries:
       - display_name="Particulate Matter 10.0"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Particulate Matter 10.0
       Notes: "PM10: Mass of particles of size less than or equal to 10 um (micrometer)
@@ -818,7 +1237,13 @@ ClimateTimeSeries:
       - display_name="Carbon Dioxide concentration"
       - units="ppm"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ppm
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Carbon Dioxide concentration
       Notes: CO2
@@ -827,7 +1252,13 @@ ClimateTimeSeries:
       - display_name="Nitrogen Dioxide concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Nitrogen Dioxide concentration
       Notes: NO2
@@ -836,7 +1267,13 @@ ClimateTimeSeries:
       - display_name="Nitrogen Oxide concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Nitrogen Oxide concentration
       Notes: "NO"
@@ -845,7 +1282,13 @@ ClimateTimeSeries:
       - display_name="Sulphur Dioxide concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Sulphur Dioxide concentration
       Notes: SO2
@@ -854,7 +1297,13 @@ ClimateTimeSeries:
       - display_name="Ozone concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Ozone concentration
       Notes: O3
@@ -863,6 +1312,10 @@ ClimateTimeSeries:
       - display_name="Sky Type"
       - units="-"
       - value_type=INSTANTANEOUS
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: '-'
       # - values.Constraints="-"
       Type: "Group(TimeSeries)"
       Description: Sky Type
@@ -872,7 +1325,13 @@ ClimateTimeSeries:
       - display_name="Ammonia concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Ammonia concentration
       Notes: NH3
@@ -881,7 +1340,13 @@ ClimateTimeSeries:
       - display_name="Carbon Monoxide concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Carbon Monoxide concentration
       Notes: CO
@@ -890,7 +1355,13 @@ ClimateTimeSeries:
       - display_name="Formaldehyde"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Formaldehyde
       Notes: HCHO
@@ -899,6 +1370,10 @@ ClimateTimeSeries:
       - display_name="Turbidity"
       - units=""
       - value_type=INSTANTANEOUS
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ''
       Type: "Group(TimeSeries)"
       Description: Turbidity
     lead:
@@ -906,7 +1381,13 @@ ClimateTimeSeries:
       - display_name="Lead concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Lead concentration
       Notes: Pb
@@ -915,7 +1396,13 @@ ClimateTimeSeries:
       - display_name="Mercury concentration"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Mercury concentration
     benzene:
@@ -923,7 +1410,13 @@ ClimateTimeSeries:
       - display_name="Benzene"
       - units="ug/m3"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ug/m3
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Benzene
       Notes: C6H6
@@ -932,7 +1425,13 @@ ClimateTimeSeries:
       - display_name="Total volatile organic compound concentration"
       - units="ppb"
       - value_type=INSTANTANEOUS
-      - values.Constraints=">=0"
+      Nested Attribute Overrides:
+        Units:
+          path: (values|uncertainty)
+          value: ppb
+        Constraints:
+          path: values
+          value: '>=0'
       Type: "Group(TimeSeries)"
       Description: Total volatile organic compound concentration
 
@@ -971,6 +1470,10 @@ SummaryData:
 Statistics:
   Object Type: "Data Group"
   Data Elements:
+    statistic_type:
+      Type: Enumeration(StatisticType)
+      Description: "Whether percent_exceedance (if provided) reports a single value's own distribution, or that value coincident with a second variable's"
+      Required: if percent_exceedance
     mean:
       Type: Numeric
       Description: "Arithmetic mean of the data"
@@ -998,8 +1501,8 @@ Statistics:
       Description: "Minimum (single lowest) value observed during the source data period"
       Notes: "e.g., the minimum monthly/annual precipitation total"
     percent_exceedance:
-      # This does not have to be this way. We can use only percent time exceedance here instead of Alternative. In this case, for coincident variables, the schema can look back to the corresponding percent time exceedance of the base variable.
       Type: "Alternative(Group(PercentTimeExceedance), Group(PercentTimeExceedanceCoincident))"
+      Constraints: statistic_type(SINGLE_VALUE, COINCIDENT_VALUES)
       Description: "Array of percent time exceedance values for this summary data element"
 
 StatisticType:

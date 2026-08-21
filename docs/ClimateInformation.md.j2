@@ -17,7 +17,7 @@ This document defines the capabilities or functionalities of a data model to exc
 •	measured or observed data, including both professional and amateur weather stations,
 •	modeled or simulated data, including that from reanalysis models and projected climate models (Global Circulation Models).
 
-The term “data model” as used here encompasses the climate data model for building performance simulation and design. This is a special case of the general data model for building data exchange published in the BSR/ASHRAE Standard 232P.
+The term “data model” as used here encompasses the climate data model for building performance simulation and design. This is a special case of the general data model for building data exchange published in the **ANSI/ASHRAE/IBPSA Standard 232**.
 
 The scope of this consensus document does not cover post-processing and generation methods, quality control methods for the data, or changes to existing file formats.  
 
@@ -48,6 +48,15 @@ A `ClimateInformation` document is a single object with four top-level members. 
 
 The `metadata` data group is defined by ASHRAE Standard 232 and is intentionally not redefined in this schema. The schema only references it and constrains its `schema_name` to `CLIMATE_INFORMATION`.
 
+```mermaid
+graph TD
+    CI["ClimateInformation<br/>(document root)"]
+    CI --> META["metadata"]
+    CI --> LOC["location"]
+    CI --> SDS["summary_data_sets [ ]<br/>Group(SummaryDataSet)"]
+    CI --> TDS["time_series_data_sets [ ]<br/>Group(TimeSeriesDataSet)"]
+```
+
 The two data-set families are deliberately parallel: each pairs a time base with a named set of climate variables, and each variable drills down to the actual numbers. A summary variable bottoms out in a `Statistics` block; a time-series variable bottoms out in an array of `values`. The subsections below walk down each branch and then line the two families up side by side.
 
 #### Summary data sets
@@ -69,6 +78,16 @@ Each ordinary variable in `summary_data` is a `SummaryData` group:
   "annual":  { /* Statistics */ },
   "monthly": [ /* 12 x Statistics, January ... December */ ]
 }
+```
+
+```mermaid
+graph TD
+    SDS["Group(SummaryDataSet)"]
+    SDS --> SDP["source_data_periods [ ]<br/>Group(SourceDataPeriod)<br/>id, start_time, end_time, ..."]
+    SDS --> CSD["summary_data<br/>Group(ClimateSummaryData)"]
+    CSD --> V["one entry per climate variable<br/>e.g. dry_bulb_temperature<br/>Group(SummaryData)"]
+    V --> ANN["annual<br/>Group(Statistics)"]
+    V --> MON["monthly [12]<br/>Group(Statistics)"]
 ```
 
 A few members of `ClimateSummaryData` do not follow the `SummaryData` shape (degree days are arrays; the hottest/coldest-month indices are plain integers). Those are covered under Special cases and conventions below.
@@ -100,6 +119,16 @@ A `TimeSeriesDataSet` is the time-series counterpart of a `SummaryDataSet`:
 - `notes` -- optional supplementary text.
 
 Each variable in `time_series` is a `TimeSeries` group: `display_name`, `units`, a `value_type` (`INSTANTANEOUS` | `AVERAGE` | `SUM` | `CUMULATIVE`), a `value_time_intervals` reference to one `TimeInterval`, and the `values` array itself. Optional parallel arrays -- `uncertainty`, `source`, `notes` -- may each be aligned to their own interval (`uncertainty_time_intervals`, etc.).
+
+```mermaid
+graph TD
+    TDS["Group(TimeSeriesDataSet)"]
+    TDS --> TI["time_intervals [ ]<br/>Group(TimeInterval)<br/>regular_interval | timestamps"]
+    TDS --> CTS["time_series<br/>Group(ClimateTimeSeries)"]
+    CTS --> V2["one entry per climate variable<br/>e.g. dry_bulb_temperature<br/>Group(TimeSeries)"]
+    V2 --> VAL["values [ ]<br/>(+ optional uncertainty, source, notes)"]
+    V2 -. "value_time_intervals (reference)" .-> TI
+```
 
 #### Summaries and time series are parallel
 

@@ -1,16 +1,15 @@
 {
   "metadata": {
-    "data_model": "IBPSA_BDE",
-    "schema": "CLIMATE_INFORMATION",
+    "schema_author": "IBPSA_BDE",
+    "schema_name": "CLIMATE_INFORMATION",
     "schema_version": "0.2.0",
-    "id": "",
+    "author": "IBPSA USA BDE Climate Working Group",
+    "id": "06599da4-bfe2-5add-9791-6abc78de1c90",
     "description": "Glasgow Bishopton, Scotland, GBR - ASHRAE Design Conditions 2025",
-    "data_timestamp": "2026-06-12T10:00Z",
-    "data_version": 2,
-    "data_source": "[THIS IS A SCHEMA EXAMPLE. Values are taken from the ASHRAE Handbook - Fundamentals 2025 design-conditions spreadsheet and converted to SI base units; it is provided to illustrate the data model, not as an authoritative data source.] WMO#03134; ASHRAE Handbook - Fundamentals 2025.",
-    "copyright_holder": "IBPSA USA",
-    "copyright_year": 2026,
-    "licensee": "IBPSA USA BDE Climate Working Group",
+    "time_of_creation": "2026-06-12T10:00Z",
+    "version": "2.0.0",
+    "source": "[THIS IS A SCHEMA EXAMPLE. Values are taken from the ASHRAE Handbook - Fundamentals 2025 design-conditions spreadsheet and converted to SI base units; it is provided to illustrate the data model, not as an authoritative data source.] WMO#03134; ASHRAE Handbook - Fundamentals 2025.",
+    "copyright": "Copyright (c) 2026 IBPSA USA. All rights reserved.",
     "license": "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
   },
   "location": {
@@ -51,20 +50,19 @@
       "source_data_periods": [
         {
           "id": "Handbook 2025 period of record",
-          "start_time": "2003-01-01",
-          "end_time": "2023-12-31",
+          "start_time": "2003-01-01T00:00Z",
+          "end_time": "2023-12-31T00:00Z",
           "notes": "Grade A: at least 30 years of hourly data (ASHRAE HOF 2025).",
           "ashrae_grade": "A"
         },
         {
           "id": "Handbook 2025 solar period of record",
-          "start_time": "2004-10-01",
-          "end_time": "2023-09-30",
+          "start_time": "2004-10-01T00:00Z",
+          "end_time": "2023-09-30T00:00Z",
           "notes": "Solar period of record to the most recent available year (ASHRAE HOF 2025).",
           "ashrae_grade": "C"
         }
       ],
-      "climate_data_type": "MEASURED",
       "notes": "Example file generated from the ASHRAE Handbook - Fundamentals 2025 design conditions. Values converted to SI base units (K, m, J/kg, J/m2, radians).",
       "summary_data": {
         "dry_bulb_temperature": {
@@ -98,7 +96,8 @@
                   269.05
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -115,7 +114,8 @@
                     284.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 277.75,
@@ -131,7 +131,8 @@
                     284.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 278.95,
@@ -147,7 +148,8 @@
                     288.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 281.25,
@@ -163,7 +165,8 @@
                     291.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 283.95,
@@ -179,7 +182,8 @@
                     296.45
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 286.85,
@@ -195,7 +199,8 @@
                     298.55
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 288.45,
@@ -211,7 +216,8 @@
                     299.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 287.85,
@@ -227,7 +233,8 @@
                     297.55
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 285.95,
@@ -243,7 +250,8 @@
                     295.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 282.85,
@@ -259,7 +267,8 @@
                     289.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 279.75,
@@ -275,7 +284,8 @@
                     287.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 277.55,
@@ -291,7 +301,8 @@
                     285.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             }
           ]
         },
@@ -320,7 +331,8 @@
                   266.95
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           }
         },
         "wet_bulb_temperature": {
@@ -349,7 +361,8 @@
                   289.35
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -364,7 +377,8 @@
                     283.85
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -378,7 +392,8 @@
                     283.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -392,7 +407,8 @@
                     284.45
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -406,7 +422,8 @@
                     286.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -420,7 +437,8 @@
                     290.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -434,7 +452,8 @@
                     291.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -448,7 +467,8 @@
                     293.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -462,7 +482,8 @@
                     292.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -476,7 +497,8 @@
                     291.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -490,7 +512,8 @@
                     288.25
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -504,7 +527,8 @@
                     286.25
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -518,7 +542,8 @@
                     284.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             }
           ]
         },
@@ -543,7 +568,8 @@
                   45600.0
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           }
         },
         "wind_speed": {
@@ -568,7 +594,8 @@
                   8.3
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -635,7 +662,8 @@
                   288.55
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dry_bulb_temperature_coincident_mean_wind_speed": {
@@ -661,7 +689,8 @@
                   1.5
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dry_bulb_temperature_coincident_prevailing_wind_direction": {
@@ -687,7 +716,8 @@
                   5.7596
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dew_point_temperature_coincident_mean_dry_bulb_temperature": {
@@ -722,7 +752,8 @@
                   271.35
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "wet_bulb_temperature_coincident_mean_dry_bulb_temperature": {
@@ -751,7 +782,8 @@
                   291.95
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "enthalpy_coincident_mean_dry_bulb_temperature": {
@@ -780,7 +812,8 @@
                   291.95
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "wind_speed_coincident_mean_dry_bulb_temperature": {
@@ -806,7 +839,8 @@
                   281.45
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "daily_average_dry_bulb_temperature": {
@@ -958,24 +992,20 @@
         "heating_degree_days": [
           {
             "base_temperature": 283.15,
-            "units": "K-day",
             "annual": 871
           },
           {
             "base_temperature": 291.45,
-            "units": "K-day",
             "annual": 3325
           }
         ],
         "cooling_degree_days": [
           {
             "base_temperature": 283.15,
-            "units": "K-day",
             "annual": 594
           },
           {
             "base_temperature": 291.45,
-            "units": "K-day",
             "annual": 7
           }
         ],
@@ -1353,25 +1383,41 @@
   ],
   "time_series_data_sets": [
     {
-      "source_data_period": {
-        "id": "Hourly Typical Year - climate.onebuilding.org",
-        "start_time": "1991-01-01",
-        "end_time": "2020-12-31",
-        "notes": "Placeholder for an hourly typical-year time series (values omitted in this example)."
-      },
-      "dry_bulb_temperature": {
-        "display_name": "Dry-bulb temperature",
-        "units": "K",
-        "value_type": "INSTANTANEOUS",
-        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
-        "values": []
-      },
-      "relative_humidity": {
-        "display_name": "Relative humidity",
-        "units": "-",
-        "value_type": "INSTANTANEOUS",
-        "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
-        "values": []
+      "time_intervals": [
+        {
+          "id": "Hourly Typical Year - climate.onebuilding.org",
+          "regular_interval": 3600,
+          "starting_time": "1991-01-01T00:00Z",
+          "notes": [
+            "Placeholder for an hourly typical-year time series (values omitted in this example)."
+          ]
+        }
+      ],
+      "time_series": {
+        "dry_bulb_temperature": {
+          "display_name": "Dry-bulb temperature",
+          "units": "K",
+          "value_type": "INSTANTANEOUS",
+          "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
+          "values": [
+            282.35
+          ],
+          "notes": [
+            "Structural placeholder only (this example omits real hourly data); value is this station's annual mean dry-bulb temperature."
+          ]
+        },
+        "relative_humidity": {
+          "display_name": "Relative humidity",
+          "units": "-",
+          "value_type": "INSTANTANEOUS",
+          "value_time_intervals": "Hourly Typical Year - climate.onebuilding.org",
+          "values": [
+            0.75
+          ],
+          "notes": [
+            "Structural placeholder only (this example omits real hourly data); value is an illustrative estimate, not measured."
+          ]
+        }
       }
     }
   ]

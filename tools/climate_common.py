@@ -7,7 +7,7 @@ spreadsheet test fixture all speak the same language. ``build_summary_data`` tur
 a ``{column_letter: value}`` dict (values in the spreadsheet's degC / kJ/kg / deg /
 m/s units) into a schema-shaped ``ClimateSummaryData`` group in *base SI* units.
 
-Unit conventions (see docs/implementation_and_application_notes.md section 2):
+Unit conventions (see the "Units" section of the ClimateInformation specification):
   * absolute temperature  degC -> K          (+ 273.15)
   * temperature range/std degC -> K          (identical value, it is a difference)
   * enthalpy              kJ/kg -> J/kg       (x 1000)
@@ -16,9 +16,87 @@ Unit conventions (see docs/implementation_and_application_notes.md section 2):
 """
 
 import math
+import re
+import uuid
 import zipfile
 from pathlib import Path
 from typing import Optional
+
+# --------------------------------------------------------------------------- #
+# Document metadata (lattice-core ``Metadata`` data group)
+# --------------------------------------------------------------------------- #
+
+# Fixed provenance strings shared by every generated document.
+SCHEMA_AUTHOR = "IBPSA_BDE"
+SCHEMA_NAME = "CLIMATE_INFORMATION"
+AUTHOR = "IBPSA USA BDE Climate Working Group"
+COPYRIGHT = "Copyright (c) 2026 IBPSA USA. All rights reserved."
+LICENSE = (
+    "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
+)
+
+# ``time_of_creation`` is a *constant*, not ``datetime.now()``: the generated examples
+# under examples/generated/ are committed to the repository, so a wall-clock timestamp
+# would make every regeneration dirty them. Bump this deliberately when regenerating.
+TIME_OF_CREATION = "2026-07-19T12:00Z"
+
+# ``version`` tracks revisions of the *data* (semver). The generated examples are the
+# first published revision of each converted document.
+DATA_VERSION = "1.0.0"
+
+# Namespace for deterministic document ids, derived once from the project URL. Document
+# ids are UUID5 (name-based) rather than UUID4 so that regenerating an example yields
+# the same id instead of a spurious diff.
+_ID_NAMESPACE = uuid.uuid5(
+    uuid.NAMESPACE_URL, "https://github.com/IBPSA-USA/climate-information"
+)
+
+_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schema/ClimateInformation.schema.yaml"
+
+
+def make_document_id(key: str) -> str:
+    """Deterministic ``Metadata.id`` (UUID5) for a document identified by ``key``.
+
+    ``key`` must be stable for a given artifact -- the document ``description`` is used
+    by the converters, since it names both the station and the source format.
+    """
+    return str(uuid.uuid5(_ID_NAMESPACE, key))
+
+
+def schema_version() -> str:
+    """Read ``Schema.Version`` out of the schema YAML so metadata cannot drift from it."""
+    text = _SCHEMA_PATH.read_text(encoding="utf-8")
+    match = re.search(r'^\s+Version:\s*"([^"]+)"', text, flags=re.MULTILINE)
+    if match is None:
+        raise ValueError(f"no Schema Version found in {_SCHEMA_PATH}")
+    return match.group(1)
+
+
+def as_timestamp(date: str, time_of_day: str = "00:00") -> str:
+    """Format a lattice ``Timestamp``: ``YYYY-MM-DDThh:mmZ`` (UTC, minute precision).
+
+    The core schema pattern is ``^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$``, so a
+    date alone and a seconds-bearing timestamp are both invalid.
+    """
+    return f"{date}T{time_of_day}Z"
+
+
+def build_metadata(description: str, source: str) -> dict:
+    """Build the lattice-core ``Metadata`` group for a generated document."""
+    return {
+        "schema_author": SCHEMA_AUTHOR,
+        "schema_name": SCHEMA_NAME,
+        "schema_version": schema_version(),
+        "author": AUTHOR,
+        "id": make_document_id(description),
+        "description": description,
+        "time_of_creation": TIME_OF_CREATION,
+        "version": DATA_VERSION,
+        "source": source,
+        "copyright": COPYRIGHT,
+        "license": LICENSE,
+    }
+
 
 # --------------------------------------------------------------------------- #
 # Unit conversions
@@ -75,6 +153,11 @@ def _id_round1(x: Optional[float]) -> Optional[float]:
     return None if x is None else round(float(x), 1)
 
 
+def _id_round3(x: Optional[float]) -> Optional[float]:
+    """Unitless, published to three decimals (the clear-sky optical depths)."""
+    return None if x is None else round(float(x), 3)
+
+
 # Forward converter (as used in _DESIGN_SPEC) -> its inverse.
 _INVERSE = {
     c_to_k: k_to_c,
@@ -82,6 +165,7 @@ _INVERSE = {
     deg_to_rad: rad_to_deg,
     diff_c_to_k: diff_k_to_c,
     float: _id_round1,
+    _id_round3: _id_round3,
 }
 
 
@@ -329,16 +413,23 @@ def build_summary_data(cols: dict, source_data_period_id: str) -> dict:
             raw = _get(cols, column)
             if raw is not None:
                 annual[stat] = conv(raw)
+        # `Statistics.statistic_type` is required whenever `percent_exceedance` is
+        # present, and selects which alternative the block uses: SINGLE_VALUE for the
+        # plain grid/lookup form, COINCIDENT_VALUES for the form that also carries
+        # `coincident_values`. It matches the schema's per-variable
+        # `(annual|monthly).statistic_type=...` constraints.
         exc_spec = pieces.get("exceedance")
         if exc_spec is not None:
             exc = _build_exceedance(cols, exc_spec[0], exc_spec[1])
             if exc is not None:
                 annual["percent_exceedance"] = exc
+                annual["statistic_type"] = "SINGLE_VALUE"
         coinc_spec = pieces.get("coincident_exceedance")
         if coinc_spec is not None:
             exc = _build_coincident_exceedance(cols, *coinc_spec)
             if exc is not None:
                 annual["percent_exceedance"] = exc
+                annual["statistic_type"] = "COINCIDENT_VALUES"
         if not annual:
             continue
         summary[name] = {
@@ -409,6 +500,131 @@ def summary_data_to_ashrae_cols(summary: dict) -> dict:
     if isinstance(summary.get("hottest_month"), int):
         cols["AF"] = summary["hottest_month"]
     return cols
+
+
+# --------------------------------------------------------------------------- #
+# Monthly design-day variables (daily ranges and clear-sky optical depths)
+# --------------------------------------------------------------------------- #
+
+# These ClimateSummaryData variables are monthly-only, and a DDY states them one month
+# at a time: each design day carries the values for *its own* month. So unlike the annual
+# design conditions above they are not addressed by ASHRAE column letter but by
+# (variable, month). The display_name and units strings must match the schema's
+# per-variable Constraints exactly.
+_MONTHLY_SPEC = {
+    "daily_dry_bulb_temperature_range": (
+        "Mean daily dry-bulb temperature range",
+        "K",
+        diff_c_to_k,
+    ),
+    "daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature": (
+        "Mean daily dry-bulb temperature range at the design dry-bulb temperature",
+        "K",
+        diff_c_to_k,
+    ),
+    "daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature": (
+        "Mean daily wet-bulb temperature range at the design dry-bulb temperature",
+        "K",
+        diff_c_to_k,
+    ),
+    "daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature": (
+        "Mean daily dry-bulb temperature range at the design wet-bulb temperature",
+        "K",
+        diff_c_to_k,
+    ),
+    "daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature": (
+        "Mean daily wet-bulb temperature range at the design wet-bulb temperature",
+        "K",
+        diff_c_to_k,
+    ),
+    "clear_sky_beam_optical_depth": (
+        "Clear-sky beam (pseudo-)optical depth",
+        "-",
+        _id_round3,
+    ),
+    "clear_sky_diffuse_optical_depth": (
+        "Clear-sky diffuse (pseudo-)optical depth",
+        "-",
+        _id_round3,
+    ),
+}
+
+# Which daily-range variables an annual design day reports, keyed by the suffix of its
+# name (the part after "Condns "). Verified against the climate.onebuilding DDYs for both
+# example stations: a DB=>MWB day states the ranges at the design dry-bulb, a WB=>MDB day
+# those at the design wet-bulb, and the DP=>MDB / Enth=>MDB days the plain mean daily
+# range. The winter days (DB, DP=>MCDB, WS=>MCDB) are deliberately absent: they carry a
+# 0.0 dry-bulb range and a blank wet-bulb range, because heating design ignores the
+# diurnal swing, so they report no range at all.
+DESIGN_DAY_RANGE_VARS = {
+    "DB=>MWB": (
+        "daily_dry_bulb_temperature_range_at_design_dry_bulb_temperature",
+        "daily_wet_bulb_temperature_range_at_design_dry_bulb_temperature",
+    ),
+    "WB=>MDB": (
+        "daily_dry_bulb_temperature_range_at_design_wet_bulb_temperature",
+        "daily_wet_bulb_temperature_range_at_design_wet_bulb_temperature",
+    ),
+    "DP=>MDB": ("daily_dry_bulb_temperature_range", None),
+    "Enth=>MDB": ("daily_dry_bulb_temperature_range", None),
+}
+
+# The taub / taud fields of a design day, in schema order.
+OPTICAL_DEPTH_VARS = (
+    "clear_sky_beam_optical_depth",
+    "clear_sky_diffuse_optical_depth",
+)
+
+MONTHS_IN_YEAR = 12
+
+
+def build_monthly_summary_data(monthly_values: dict, source_data_period_id: str) -> dict:
+    """Build the monthly ``ClimateSummaryData`` entries from per-month raw values.
+
+    ``monthly_values`` maps a variable name to ``{month (1-12): raw value}`` in the
+    DDY's units (degC differences, unitless optical depths). A DDY only ever states its
+    design months, so the months it says nothing about become empty ``Statistics``
+    objects -- the schema requires all twelve slots, and an empty one is the honest way
+    to say "no statistics for this month".
+    """
+    summary: dict = {}
+    for name, (display, units, conv) in _MONTHLY_SPEC.items():
+        by_month = monthly_values.get(name) or {}
+        if not by_month:
+            continue
+        months = []
+        for month in range(1, MONTHS_IN_YEAR + 1):
+            raw = by_month.get(month)
+            months.append({} if raw is None else {"mean": conv(float(raw))})
+        summary[name] = {
+            "display_name": display,
+            "units": units,
+            "source_data_period": source_data_period_id,
+            "source_data_type": "MEASURED",
+            "monthly": months,
+        }
+    return summary
+
+
+def monthly_summary_data_to_values(summary: dict) -> dict:
+    """Inverse of :func:`build_monthly_summary_data`.
+
+    Recover ``{variable: {month (1-12): raw value}}`` in the DDY's units, so the
+    JSON -> DDY converter can write each design day's ranges and optical depths.
+    """
+    out: dict = {}
+    for name, (_display, _units, conv) in _MONTHLY_SPEC.items():
+        var = summary.get(name)
+        if not isinstance(var, dict):
+            continue
+        by_month = {}
+        for index, stats in enumerate(var.get("monthly") or [], start=1):
+            value = (stats or {}).get("mean") if isinstance(stats, dict) else None
+            if value is not None:
+                by_month[index] = _INVERSE[conv](value)
+        if by_month:
+            out[name] = by_month
+    return out
 
 
 # --------------------------------------------------------------------------- #

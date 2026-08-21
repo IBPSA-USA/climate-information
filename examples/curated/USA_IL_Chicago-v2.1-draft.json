@@ -1,16 +1,15 @@
 {
   "metadata": {
-    "data_model": "IBPSA_BDE",
-    "schema": "CLIMATE_INFORMATION",
+    "schema_author": "IBPSA_BDE",
+    "schema_name": "CLIMATE_INFORMATION",
     "schema_version": "0.2.0",
-    "id": "",
+    "author": "IBPSA USA BDE Climate Working Group",
+    "id": "9ffc4984-8553-5f61-9ae3-3878581fc935",
     "description": "Chicago O'Hare Intl Ap, IL, USA - ASHRAE Design Conditions 2025",
-    "data_timestamp": "2026-06-12T10:00Z",
-    "data_version": 2,
-    "data_source": "[THIS IS A SCHEMA EXAMPLE. Values are taken from the ASHRAE Handbook - Fundamentals 2025 design-conditions spreadsheet and converted to SI base units; it is provided to illustrate the data model, not as an authoritative data source.] WMO#72530; ASHRAE Handbook - Fundamentals 2025.",
-    "copyright_holder": "IBPSA USA",
-    "copyright_year": 2026,
-    "licensee": "IBPSA USA BDE Climate Working Group",
+    "time_of_creation": "2026-06-12T10:00Z",
+    "version": "2.0.0",
+    "source": "[THIS IS A SCHEMA EXAMPLE. Values are taken from the ASHRAE Handbook - Fundamentals 2025 design-conditions spreadsheet and converted to SI base units; it is provided to illustrate the data model, not as an authoritative data source.] WMO#72530; ASHRAE Handbook - Fundamentals 2025.",
+    "copyright": "Copyright (c) 2026 IBPSA USA. All rights reserved.",
     "license": "Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)"
   },
   "location": {
@@ -75,15 +74,15 @@
       "source_data_periods": [
         {
           "id": "Handbook 2025 period of record",
-          "start_time": "1999-01-01",
-          "end_time": "2023-12-31",
+          "start_time": "1999-01-01T00:00Z",
+          "end_time": "2023-12-31T00:00Z",
           "notes": "Grade A: at least 30 years of hourly data (ASHRAE HOF 2025).",
           "ashrae_grade": "A"
         },
         {
           "id": "Handbook 2025 solar period of record",
-          "start_time": "2004-10-01",
-          "end_time": "2023-09-30",
+          "start_time": "2004-10-01T00:00Z",
+          "end_time": "2023-09-30T00:00Z",
           "notes": "Solar period of record to the most recent available year (ASHRAE HOF 2025).",
           "ashrae_grade": "C"
         }
@@ -121,7 +120,8 @@
                   255.05
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -138,7 +138,8 @@
                     286.55
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 270.75,
@@ -154,7 +155,8 @@
                     290.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 276.95,
@@ -170,7 +172,8 @@
                     297.85
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 282.85,
@@ -186,7 +189,8 @@
                     300.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 288.85,
@@ -202,7 +206,8 @@
                     304.85
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 294.45,
@@ -218,7 +223,8 @@
                     307.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 297.05,
@@ -234,7 +240,8 @@
                     308.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 296.25,
@@ -250,7 +257,8 @@
                     307.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 292.35,
@@ -266,7 +274,8 @@
                     305.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 285.35,
@@ -282,7 +291,8 @@
                     301.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 278.45,
@@ -298,7 +308,8 @@
                     294.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "mean": 272.15,
@@ -314,7 +325,8 @@
                     288.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             }
           ]
         },
@@ -343,7 +355,8 @@
                   249.55
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           }
         },
         "wet_bulb_temperature": {
@@ -372,7 +385,8 @@
                   296.35
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -387,7 +401,8 @@
                     285.05
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -401,7 +416,8 @@
                     286.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -415,7 +431,8 @@
                     290.65
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -429,7 +446,8 @@
                     292.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -443,7 +461,8 @@
                     296.15
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -457,7 +476,8 @@
                     298.25
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -471,7 +491,8 @@
                     299.75
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -485,7 +506,8 @@
                     299.35
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -499,7 +521,8 @@
                     297.25
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -513,7 +536,8 @@
                     294.85
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -527,7 +551,8 @@
                     289.85
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             },
             {
               "percent_exceedance": {
@@ -541,7 +566,8 @@
                     286.95
                   ]
                 }
-              }
+              },
+              "statistic_type": "SINGLE_VALUE"
             }
           ]
         },
@@ -566,7 +592,8 @@
                   70000.0
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           }
         },
         "wind_speed": {
@@ -591,7 +618,8 @@
                   8.4
                 ]
               }
-            }
+            },
+            "statistic_type": "SINGLE_VALUE"
           },
           "monthly": [
             {
@@ -658,7 +686,8 @@
                   294.95
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dry_bulb_temperature_coincident_mean_wind_speed": {
@@ -684,7 +713,8 @@
                   4.7
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dry_bulb_temperature_coincident_prevailing_wind_direction": {
@@ -710,7 +740,8 @@
                   4.8869
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "dew_point_temperature_coincident_mean_dry_bulb_temperature": {
@@ -745,7 +776,8 @@
                   255.95
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "wet_bulb_temperature_coincident_mean_dry_bulb_temperature": {
@@ -774,7 +806,8 @@
                   301.15
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "enthalpy_coincident_mean_dry_bulb_temperature": {
@@ -803,7 +836,8 @@
                   301.15
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "wind_speed_coincident_mean_dry_bulb_temperature": {
@@ -829,7 +863,8 @@
                   271.25
                 ]
               }
-            }
+            },
+            "statistic_type": "COINCIDENT_VALUES"
           }
         },
         "daily_average_dry_bulb_temperature": {
@@ -981,24 +1016,20 @@
         "heating_degree_days": [
           {
             "base_temperature": 283.15,
-            "units": "K-day",
             "annual": 1593
           },
           {
             "base_temperature": 291.45,
-            "units": "K-day",
             "annual": 3346
           }
         ],
         "cooling_degree_days": [
           {
             "base_temperature": 283.15,
-            "units": "K-day",
             "annual": 1833
           },
           {
             "base_temperature": 291.45,
-            "units": "K-day",
             "annual": 542
           }
         ],
